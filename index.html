@@ -227,30 +227,6 @@
             background: var(--accent1-light); /* Light mode accent */
         }
 
-        /* Fade-in animation for content sections */
-        .fade-in-section {
-            opacity: 0; /* Start hidden */
-            transform: translateY(20px); /* Default for sections to come up */
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Hero Section specific animation override */
-        #hero-section {
-            opacity: 0;
-            transform: translateX(-100px); /* Start off-screen to the left */
-            transition: opacity 1.2s ease-out, transform 1.2s ease-out; /* Dynamic transition */
-        }
-
-        #hero-section.is-visible {
-            opacity: 1;
-            transform: translateX(0); /* Slide in to original position */
-        }
-
         /* Modal specific styles */
         .modal-overlay {
             background-color: rgba(0, 0, 0, 0.7);
@@ -392,6 +368,22 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
             border-color: var(--accent1-dark);
         }
+
+        /* Navbar link hover animation - simplified */
+        .nav-link {
+            transition: color 0.2s ease-in-out; /* Only transition color now */
+        }
+        .nav-link:hover {
+            color: var(--accent1-dark); /* Matches dark mode accent for hover text */
+            /* background-color: rgba(255, 255, 255, 0.08); */
+            /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+        }
+
+        .light .nav-link:hover {
+            color: var(--accent1-light); /* Matches light mode accent for hover text */
+            /* background-color: rgba(0, 0, 0, 0.03); */
+            /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); */
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -404,15 +396,15 @@
     <header class="p-6 shadow-md flex justify-between items-center rounded-b-xl bg-opaque-card transition-colors duration-300 sticky top-0 z-10 flex-col md:flex-row">
         <div class="flex items-center space-x-3 mb-4 md:mb-0">
             <i class="fas fa-dumbbell text-3xl text-accent1"></i>
-            <h1 class="text-3xl font-bold brand-name">David's Profile</h1> </div>
+            <h1 class="text-3xl font-bold brand-name">David's Peak Performance</h1> </div>
         <nav class="flex-grow flex justify-center md:justify-end">
             <ul class="flex flex-wrap justify-center space-x-4 md:space-x-6 text-lg font-medium">
-                <li><a href="#hero-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Home</a></li>
-                <li><a href="#transformations-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Transformations</a></li>
-                <li><a href="#bundles-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Bundles</a></li>
-                <li><a href="#reviews-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Reviews</a></li>
-                <li><a href="#about-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">About</a></li>
-                <li><a href="#contact-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Contact</a></li>
+                <li><a href="#hero-section" class="nav-link py-2 px-3 rounded-md">Home</a></li>
+                <li><a href="#transformations-section" class="nav-link py-2 px-3 rounded-md">Transformations</a></li>
+                <li><a href="#bundles-section" class="nav-link py-2 px-3 rounded-md">Bundles</a></li>
+                <li><a href="#reviews-section" class="nav-link py-2 px-3 rounded-md">Reviews</a></li>
+                <li><a href="#about-section" class="nav-link py-2 px-3 rounded-md">About</a></li>
+                <li><a href="#contact-section" class="nav-link py-2 px-3 rounded-md">Contact</a></li>
             </ul>
         </nav>
         <div class="flex items-center space-x-4 mt-4 md:mt-0">
@@ -432,7 +424,7 @@
     </header>
 
     <main class="flex-grow p-6 md:p-8 lg:p-10 space-y-16 relative z-0">
-        <section id="hero-section" class="fade-in-section text-center py-16 md:py-24 flex flex-col lg:flex-row items-center justify-center lg:space-x-12 px-6">
+        <section id="hero-section" class="text-center py-16 md:py-24 flex flex-col lg:flex-row items-center justify-center lg:space-x-12 px-6">
             <div class="lg:w-1/3 mb-8 lg:mb-0">
                 <img src="imgs/coach.png" alt="David the Gym Coach" class="rounded-xl w-80 h-[480px] object-cover mx-auto border-4 border-black">
             </div>
@@ -449,7 +441,7 @@
             </div>
         </section>
 
-        <section id="transformations-section" class="fade-in-section py-16">
+        <section id="transformations-section" class="py-16">
             <h2 class="text-4xl font-bold text-center mb-12 text-accent1">Client Transformations</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 transformation-card">
@@ -471,7 +463,7 @@
                             data-story-after-img="imgs/t111.png"
                             data-story-quote="Lost 30 lbs and gained incredible strength! David's guidance was a game-changer."
                             data-story-full="Sarah started her journey feeling low on energy and confidence. Through David's personalized strength training and nutrition plans, she not only shed 30 pounds but also discovered a newfound passion for weightlifting. Her dedication, combined with David's unwavering support, led to remarkable improvements in her physical and mental well-being.">
-                        View Story
+                        View Story <i class="fas fa-eye ml-2"></i>
                     </button>
                 </div>
 
@@ -494,7 +486,7 @@
                             data-story-after-img="imgs/t22.png"
                             data-story-quote="Achieved my dream physique. David's structured approach to training and diet is unmatched."
                             data-story-full="Mark's goal was to build significant muscle mass and improve his overall strength. David designed a rigorous, progressive overload program combined with a high-protein, calorie-sufficient meal plan. Within months, Mark saw incredible gains in lean muscle, transforming his physique and boosting his confidence both inside and outside the gym.">
-                        View Story
+                        View Story <i class="fas fa-eye ml-2"></i>
                     </button>
                 </div>
 
@@ -517,13 +509,13 @@
                             data-story-after-img="imgs/t33.png"
                             data-story-quote="My stamina is through the roof! David helped me conquer my first marathon."
                             data-story-full="Emily approached David with the ambitious goal of completing her first marathon. David crafted a progressive running and cross-training program, focusing on endurance, recovery, and proper fueling. Not only did Emily finish her marathon strong, but she also significantly improved her overall cardiovascular health and running technique, exceeding her own expectations.">
-                        View Story
+                        View Story <i class="fas fa-eye ml-2"></i>
                     </button>
                 </div>
             </div>
         </section>
 
-        <section id="bundles-section" class="fade-in-section py-16">
+        <section id="bundles-section" class="py-16">
             <h2 class="text-4xl font-bold text-center mb-12 text-accent1">Our Coaching Bundles</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 bundle-card">
@@ -591,12 +583,12 @@
             </div>
         </section>
 
-        <section id="reviews-section" class="fade-in-section py-16">
+        <section id="reviews-section" class="py-16">
             <h2 class="text-4xl font-bold text-center mb-12 text-accent2">What Our Clients Say</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300 fade-in-section">
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
                     <div class="flex items-center mb-4">
-                        <img src="https://placehold.co/50x50/555555/FFFFFF?text=JS" alt="John Smith" class="rounded-full w-12 h-12 object-cover mr-4">
+                        <img src="imgs/pp1.png" alt="John Smith" class="rounded-full w-12 h-12 object-cover mr-4">
                         <div>
                             <p class="font-semibold text-lg">John Smith</p>
                             <div class="text-yellow-400">
@@ -607,9 +599,9 @@
                     <p class="text-gray-700 dark:text-gray-300 italic">"David's coaching transformed my fitness journey. His personalized approach and constant motivation helped me achieve results I never thought possible!"</p>
                 </div>
 
-                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300 fade-in-section">
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
                     <div class="flex items-center mb-4">
-                        <img src="https://placehold.co/50x50/333333/FFFFFF?text=JD" alt="Jane Doe" class="rounded-full w-12 h-12 object-cover mr-4">
+                        <img src="imgs/pp3.png" alt="Jane Doe" class="rounded-full w-12 h-12 object-cover mr-4">
                         <div>
                             <p class="font-semibold text-lg">Jane Doe</p>
                             <div class="text-yellow-400">
@@ -620,9 +612,9 @@
                     <p class="text-gray-700 dark:text-gray-300 italic">"I've tried many coaches, but David stands out. His knowledge and dedication are unparalleled. Highly recommend for anyone serious about their health."</p>
                 </div>
 
-                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300 fade-in-section">
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
                     <div class="flex items-center mb-4">
-                        <img src="https://placehold.co/50x50/555555/FFFFFF?text=EW" alt="Emily White" class="rounded-full w-12 h-12 object-cover mr-4">
+                        <img src="imgs/pp2.png" alt="Emily White" class="rounded-full w-12 h-12 object-cover mr-4">
                         <div>
                             <p class="font-semibold text-lg">Emily White</p>
                             <div class="text-yellow-400">
@@ -635,8 +627,8 @@
             </div>
         </section>
 
-        <section id="about-section" class="fade-in-section py-16">
-            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300 fade-in-section">
+        <section id="about-section" class="py-16">
+            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300">
                 <h2 class="text-4xl font-bold mb-6 text-accent1">About David's Coaching</h2>
                 <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
                     David is a certified and highly experienced gym coach dedicated to helping individuals of all fitness levels achieve their health and wellness goals. With a passion for transformative results, David combines cutting-edge training methodologies with personalized support, ensuring every client receives a unique and effective path to success. His philosophy centers on building sustainable habits, fostering mental resilience, and celebrating every milestone, big or small. Join David and embark on a journey to a stronger, healthier, and more confident you.
@@ -644,8 +636,8 @@
             </div>
         </section>
 
-        <section id="contact-section" class="fade-in-section py-16">
-            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300 fade-in-section">
+        <section id="contact-section" class="py-16">
+            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300">
                 <h2 class="text-4xl font-bold mb-6 text-accent2">Get in Touch</h2>
                 <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
                     Ready to start your fitness journey? Contact David today!
@@ -681,7 +673,7 @@
             </div>
             <p id="modal-bundle-subtitle" class="text-lg text-gray-600 dark:text-gray-400 mb-4"></p>
             <p id="modal-bundle-price" class="text-4xl font-bold text-accent2 mb-6"></p>
-            <p id="modal-bundle-description" class="text-md text-gray-700 dark:text-gray-300 mb-6 leading-relaxed"></p>
+            <p id="modal-bundle-description" class="text-md text-gray-700 dark:text-gray-300 leading-relaxed mb-6"></p>
             <ul id="modal-bundle-features" class="list-none text-lg text-gray-700 dark:text-gray-300 mb-8 space-y-3">
                 </ul>
             <button class="w-full py-3 px-6 bg-black text-black dark:text-white text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover">
@@ -710,9 +702,9 @@
             </div>
             <p id="story-modal-quote" class="text-lg italic text-gray-700 dark:text-gray-300 mb-4"></p>
             <p id="story-modal-full" class="text-md text-gray-700 dark:text-gray-300 leading-relaxed mb-6"></p>
-            <button class="w-full py-3 px-6 bg-black text-black dark:text-white text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover">
-                Contact David for Your Story
-            </button>
+            <a href="#contact-section" class="close-story-modal-and-scroll w-full py-3 px-6 bg-black text-black dark:text-white text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover text-center block">
+                Contact David for Your Story <i class="fas fa-paper-plane ml-2"></i>
+            </a>
         </div>
     </div>
 
@@ -727,15 +719,15 @@
             <form id="login-form" class="space-y-6">
                 <div>
                     <label for="username-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username / Email</label>
-                    <input type="text" id="username-input" name="username" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent1" required>
+                    <input type="text" id="username-input" name="username" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-black text-white focus:outline-none focus:ring-2 focus:ring-accent1" required>
                     <p id="username-error" class="text-red-500 text-sm mt-1 hidden">Please enter your username or email.</p>
                 </div>
                 <div>
                     <label for="password-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
-                    <input type="password" id="password-input" name="password" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent1" required>
+                    <input type="password" id="password-input" name="password" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-black text-white focus:outline-none focus:ring-2 focus:ring-accent1" required>
                     <p id="password-error" class="text-red-500 text-sm mt-1 hidden">Please enter your password.</p>
                 </div>
-                <button type="submit" class="w-full py-3 px-6 bg-accent1 text-white text-lg font-semibold rounded-md shadow-md hover:bg-accent2 transition-all duration-300 btn-fill-hover">
+                <button type="submit" class="w-full py-3 px-6 bg-white text-black text-lg font-semibold rounded-md shadow-md transition-all duration-300 btn-fill-hover">
                     Log In
                 </button>
             </form>
@@ -754,7 +746,7 @@
             const html = document.documentElement;
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
-            const sections = document.querySelectorAll('.fade-in-section');
+            // Removed: const sections = document.querySelectorAll('.fade-in-section');
             const exploreBundlesBtn = document.getElementById('explore-bundles-btn');
             const navLinks = document.querySelectorAll('.nav-link');
 
@@ -778,6 +770,7 @@
             const storyModalQuote = document.getElementById('story-modal-quote');
             const storyModalFull = document.getElementById('story-modal-full');
             const storyModalContent = storyModal.querySelector('.modal-content');
+            const closeStoryModalAndScrollButtons = document.querySelectorAll('.close-story-modal-and-scroll');
 
 
             // Login Modal Elements
@@ -788,7 +781,7 @@
             const loginModalCloseBtn = document.getElementById('login-modal-close-btn');
             const loginForm = document.getElementById('login-form');
             const usernameInput = document.getElementById('username-input');
-            const passwordInput = document.getElementById('password-input');
+            const passwordInput = document = document.getElementById('password-input');
             const usernameError = document.getElementById('username-error');
             const passwordError = document.getElementById('password-error');
             const loginModalContent = loginModal.querySelector('.modal-content');
@@ -854,25 +847,25 @@
                 link.addEventListener('click', smoothScroll);
             });
 
-            // --- Fade-in on Scroll Functionality (Generalized) ---
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
+            // Removed: Fade-in on Scroll Functionality (Generalized)
+            // const observerOptions = {
+            //     root: null,
+            //     rootMargin: '0px',
+            //     threshold: 0.1
+            // };
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
+            // const observer = new IntersectionObserver((entries, observer) => {
+            //     entries.forEach(entry => {
+            //         if (entry.isIntersecting) {
+            //             entry.target.classList.add('is-visible');
+            //             observer.unobserve(entry.target);
+            //         }
+            //     });
+            // }, observerOptions);
 
-            sections.forEach(section => {
-                observer.observe(section);
-            });
+            // sections.forEach(section => {
+            //     observer.observe(section);
+            // });
 
             // --- Modal Helpers ---
             function openModal(modalElement, contentElement) {
@@ -949,6 +942,15 @@
                 }
             });
 
+            // New: Handle "Contact David for Your Story" button
+            closeStoryModalAndScrollButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    closeModal(storyModal, storyModalContent); // Close the story modal
+                    smoothScroll(event); // Then scroll to the contact section
+                });
+            });
+
+
             // --- Login/Logout Functionality ---
             function updateAuthUI(isLoggedIn, username = '') {
                 const welcomeMessageElement = document.getElementById('welcome-message');
@@ -956,9 +958,10 @@
 
                 if (isLoggedIn) {
                     loginBtn.classList.add('hidden');
-                    welcomeMessageElement.classList.remove('hidden');
+                    // welcomeMessageElement.classList.remove('hidden'); // Removed: Do not show welcome message
                     logoutBtnElement.classList.remove('hidden');
-                    welcomeMessageElement.textContent = `Welcome, ${username}!`;
+                    welcomeMessageElement.textContent = ''; // Ensure no text is set, as it's hidden
+                    welcomeMessageElement.classList.add('hidden'); // Explicitly keep hidden
                 } else {
                     loginBtn.classList.remove('hidden');
                     welcomeMessageElement.classList.add('hidden');
@@ -1019,7 +1022,7 @@
                     localStorage.setItem('username', enteredUsername);
                     updateAuthUI(true, enteredUsername);
                     closeModal(loginModal, loginModalContent);
-                    alert(`Welcome back, ${enteredUsername}!`);
+                    // alert(`Welcome back, ${enteredUsername}!`); // Removed alert
                 }
             });
 
@@ -1027,7 +1030,7 @@
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('username');
                 updateAuthUI(false);
-                alert('You have been logged out.');
+                // alert('You have been logged out.'); // Removed alert
             });
 
             // --- Back to Top Button Functionality ---
