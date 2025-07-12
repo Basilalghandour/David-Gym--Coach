@@ -295,7 +295,6 @@
 
         /* Bundle Card Hover Effect (Reverted 3D tilt) */
         .bundle-card {
-            transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out, border-color 0.5s ease-in-out;
             border-width: 1px;
             border-style: solid;
             /* Removed: transform-style: preserve-3d; */
@@ -309,7 +308,6 @@
         }
 
         .bundle-card:hover {
-            transform: translateY(-12px) scale(1.04); /* Reverted: removed rotateY(3deg) */
         }
         /* Richer shadow and border for light mode */
         .light .bundle-card:hover {
@@ -370,7 +368,6 @@
         }
 
         .transformation-card {
-            transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out, border-color 0.5s ease-in-out;
             border-width: 1px;
             border-style: solid;
         }
@@ -383,7 +380,7 @@
         }
 
         .transformation-card:hover {
-            transform: translateY(-12px) scale(1.04);
+            
         }
         /* Richer shadow and border for light mode */
         .light .transformation-card:hover {
@@ -407,7 +404,7 @@
     <header class="p-6 shadow-md flex justify-between items-center rounded-b-xl bg-opaque-card transition-colors duration-300 sticky top-0 z-10 flex-col md:flex-row">
         <div class="flex items-center space-x-3 mb-4 md:mb-0">
             <i class="fas fa-dumbbell text-3xl text-accent1"></i>
-            <h1 class="text-3xl font-bold brand-name">David's Peak Performance</h1> </div>
+            <h1 class="text-3xl font-bold brand-name">David's Profile</h1> </div>
         <nav class="flex-grow flex justify-center md:justify-end">
             <ul class="flex flex-wrap justify-center space-x-4 md:space-x-6 text-lg font-medium">
                 <li><a href="#hero-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Home</a></li>
@@ -459,19 +456,19 @@
                     <h3 class="text-2xl font-semibold text-accent2 mb-4">Sarah's Strength Journey</h3>
                     <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-4 w-full">
                         <div class="relative w-full">
-                            <img src="https://placehold.co/250x300/e0e0e0/555555?text=Before" alt="Sarah Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <img src="imgs/t1.png" alt="Sarah Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
                             <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">BEFORE</span>
                         </div>
                         <div class="relative w-full">
-                            <img src="https://placehold.co/250x300/a0a0a0/ffffff?text=After" alt="Sarah After" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
-                            <span class="absolute top-2 left-2 bg-accent1 text-white text-xs px-2 py-1 rounded">AFTER</span>
+                            <img src="imgs/t111.png" alt="Sarah After" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <span class="absolute top-2 left-2 bg-white text-black text-xs px-2 py-1 rounded">AFTER</span>
                         </div>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"Lost 30 lbs and gained incredible strength! David's guidance was a game-changer."</p>
                     <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-story-name="Sarah's Strength Journey"
-                            data-story-before-img="https://placehold.co/600x400/e0e0e0/555555?text=Sarah+Before"
-                            data-story-after-img="https://placehold.co/600x400/a0a0a0/ffffff?text=Sarah+After"
+                            data-story-before-img="imgs/t1.png"
+                            data-story-after-img="imgs/t111.png"
                             data-story-quote="Lost 30 lbs and gained incredible strength! David's guidance was a game-changer."
                             data-story-full="Sarah started her journey feeling low on energy and confidence. Through David's personalized strength training and nutrition plans, she not only shed 30 pounds but also discovered a newfound passion for weightlifting. Her dedication, combined with David's unwavering support, led to remarkable improvements in her physical and mental well-being.">
                         View Story
@@ -482,18 +479,18 @@
                     <h3 class="text-2xl font-semibold text-accent2 mb-4">Mark's Muscle Gain</h3>
                     <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-4 w-full">
                         <div class="relative w-full">
-                            <img src="imgs/t2.png" alt="Mark Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <img src="imgs/t222.png" alt="Mark Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
                             <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">BEFORE</span>
                         </div>
                         <div class="relative w-full">
                             <img src="imgs/t22.png" alt="Mark After" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
-                            <span class="absolute top-2 left-2 bg-accent1 text-white text-xs px-2 py-1 rounded">AFTER</span>
+                            <span class="absolute top-2 left-2 bg-white text-black text-xs px-2 py-1 rounded">AFTER</span>
                         </div>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"Achieved my dream physique. David's structured approach to training and diet is unmatched."</p>
                     <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-story-name="Mark's Muscle Gain"
-                            data-story-before-img="imgs/t2.png"
+                            data-story-before-img="imgs/t222.png"
                             data-story-after-img="imgs/t22.png"
                             data-story-quote="Achieved my dream physique. David's structured approach to training and diet is unmatched."
                             data-story-full="Mark's goal was to build significant muscle mass and improve his overall strength. David designed a rigorous, progressive overload program combined with a high-protein, calorie-sufficient meal plan. Within months, Mark saw incredible gains in lean muscle, transforming his physique and boosting his confidence both inside and outside the gym.">
@@ -505,19 +502,19 @@
                     <h3 class="text-2xl font-semibold text-accent2 mb-4">Emily's Endurance Boost</h3>
                     <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-4 w-full">
                         <div class="relative w-full">
-                            <img src="https://placehold.co/250x300/e0e0e0/555555?text=Before" alt="Emily Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <img src="imgs/t3.png" alt="Emily Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
                             <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">BEFORE</span>
                         </div>
                         <div class="relative w-full">
-                            <img src="https://placehold.co/250x300/a0a0a0/ffffff?text=After" alt="Emily After" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
-                            <span class="absolute top-2 left-2 bg-accent1 text-white text-xs px-2 py-1 rounded">AFTER</span>
+                            <img src="imgs/t33.png" alt="Emily After" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <span class="absolute top-2 left-2 bg-white text-black text-xs px-2 py-1 rounded">AFTER</span>
                         </div>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"My stamina is through the roof! David helped me conquer my first marathon."</p>
                     <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-story-name="Emily's Endurance Boost"
-                            data-story-before-img="https://placehold.co/600x400/e0e0e0/555555?text=Emily+Before"
-                            data-story-after-img="https://placehold.co/600x400/a0a0a0/ffffff?text=Emily+After"
+                            data-story-before-img="imgs/t3.png"
+                            data-story-after-img="imgs/t33.png"
                             data-story-quote="My stamina is through the roof! David helped me conquer my first marathon."
                             data-story-full="Emily approached David with the ambitious goal of completing her first marathon. David crafted a progressive running and cross-training program, focusing on endurance, recovery, and proper fueling. Not only did Emily finish her marathon strong, but she also significantly improved her overall cardiovascular health and running technique, exceeding her own expectations.">
                         View Story
@@ -708,7 +705,7 @@
                 </div>
                 <div class="relative">
                     <img id="story-modal-after-img" src="" alt="After Transformation" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
-                    <span class="absolute top-2 left-2 bg-accent1 text-white text-sm px-2 py-1 rounded">AFTER</span>
+                    <span class="absolute top-2 left-2 bg-white text-black text-sm px-2 py-1 rounded">AFTER</span>
                 </div>
             </div>
             <p id="story-modal-quote" class="text-lg italic text-gray-700 dark:text-gray-300 mb-4"></p>
