@@ -384,6 +384,32 @@
             /* background-color: rgba(0, 0, 0, 0.03); */
             /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); */
         }
+
+        /* Fade-in animation for sections */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform; /* Optimize for animation performance */
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Fade-in from left animation for hero section */
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform; /* Optimize for animation performance */
+        }
+
+        .fade-in-left.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -396,7 +422,7 @@
     <header class="p-6 shadow-md flex justify-between items-center rounded-b-xl bg-opaque-card transition-colors duration-300 sticky top-0 z-10 flex-col md:flex-row">
         <div class="flex items-center space-x-3 mb-4 md:mb-0">
             <i class="fas fa-dumbbell text-3xl text-accent1"></i>
-            <h1 class="text-3xl font-bold brand-name">David's Peak Performance</h1> </div>
+            <h1 class="text-3xl font-bold brand-name">David's Profile</h1> </div>
         <nav class="flex-grow flex justify-center md:justify-end">
             <ul class="flex flex-wrap justify-center space-x-4 md:space-x-6 text-lg font-medium">
                 <li><a href="#hero-section" class="nav-link py-2 px-3 rounded-md">Home</a></li>
@@ -424,7 +450,7 @@
     </header>
 
     <main class="flex-grow p-6 md:p-8 lg:p-10 space-y-16 relative z-0">
-        <section id="hero-section" class="text-center py-16 md:py-24 flex flex-col lg:flex-row items-center justify-center lg:space-x-12 px-6">
+        <section id="hero-section" class="text-center py-16 md:py-24 flex flex-col lg:flex-row items-center justify-center lg:space-x-12 px-6 fade-in-left">
             <div class="lg:w-1/3 mb-8 lg:mb-0">
                 <img src="imgs/coach.png" alt="David the Gym Coach" class="rounded-xl w-80 h-[480px] object-cover mx-auto border-4 border-black">
             </div>
@@ -441,7 +467,7 @@
             </div>
         </section>
 
-        <section id="transformations-section" class="py-16">
+        <section id="transformations-section" class="py-16 fade-in-section">
             <h2 class="text-4xl font-bold text-center mb-12 text-accent1">Client Transformations</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 transformation-card">
@@ -515,7 +541,7 @@
             </div>
         </section>
 
-        <section id="bundles-section" class="py-16">
+        <section id="bundles-section" class="py-16 fade-in-section">
             <h2 class="text-4xl font-bold text-center mb-12 text-accent1">Our Coaching Bundles</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 bundle-card">
@@ -583,7 +609,7 @@
             </div>
         </section>
 
-        <section id="reviews-section" class="py-16">
+        <section id="reviews-section" class="py-16 fade-in-section">
             <h2 class="text-4xl font-bold text-center mb-12 text-accent2">What Our Clients Say</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
@@ -627,7 +653,7 @@
             </div>
         </section>
 
-        <section id="about-section" class="py-16">
+        <section id="about-section" class="py-16 fade-in-section">
             <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300">
                 <h2 class="text-4xl font-bold mb-6 text-accent1">About David's Coaching</h2>
                 <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
@@ -636,7 +662,7 @@
             </div>
         </section>
 
-        <section id="contact-section" class="py-16">
+        <section id="contact-section" class="py-16 fade-in-section">
             <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300">
                 <h2 class="text-4xl font-bold mb-6 text-accent2">Get in Touch</h2>
                 <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
@@ -746,7 +772,6 @@
             const html = document.documentElement;
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
-            // Removed: const sections = document.querySelectorAll('.fade-in-section');
             const exploreBundlesBtn = document.getElementById('explore-bundles-btn');
             const navLinks = document.querySelectorAll('.nav-link');
 
@@ -791,6 +816,10 @@
 
             // DNA Container
             const dnaContainer = document.querySelector('.dna-container');
+
+            // Sections for fade-in animation
+            const sections = document.querySelectorAll('.fade-in-section, .fade-in-left');
+
 
             // --- Theme Toggle Functionality ---
             const currentTheme = localStorage.getItem('theme') || 'dark';
@@ -847,25 +876,25 @@
                 link.addEventListener('click', smoothScroll);
             });
 
-            // Removed: Fade-in on Scroll Functionality (Generalized)
-            // const observerOptions = {
-            //     root: null,
-            //     rootMargin: '0px',
-            //     threshold: 0.1
-            // };
+            // --- Fade-in on Scroll Functionality ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
 
-            // const observer = new IntersectionObserver((entries, observer) => {
-            //     entries.forEach(entry => {
-            //         if (entry.isIntersecting) {
-            //             entry.target.classList.add('is-visible');
-            //             observer.unobserve(entry.target);
-            //         }
-            //     });
-            // }, observerOptions);
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
 
-            // sections.forEach(section => {
-            //     observer.observe(section);
-            // });
+            sections.forEach(section => {
+                observer.observe(section);
+            });
 
             // --- Modal Helpers ---
             function openModal(modalElement, contentElement) {
