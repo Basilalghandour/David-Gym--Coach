@@ -5,7 +5,7 @@
     <title>David's Gym Coach - Your Fitness Journey Starts Here</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         /* Custom Tailwind Configuration for themes (Monochrome Palette) */
         :root {
@@ -22,6 +22,8 @@
             --card-dark: #222222;       /* Darker gray for cards */
             --accent1-dark: #BBBBBB;    /* Light gray for primary accent */
             --accent2-dark: #999999;    /* Medium light gray for secondary accent */
+            --dna-color: rgba(255, 255, 255, 0.45); /* Increased subtlety for DNA lines */
+            --dna-shadow-color: rgba(255, 255, 255, 0.2); /* Increased subtlety for DNA shades */
         }
 
         .light {
@@ -29,7 +31,12 @@
             color: var(--text-light);
         }
         .light .bg-card {
-            background-color: var(--card-light);
+            background-color: rgba(255, 255, 255, 0.7); /* More transparent white */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+        }
+        /* New opaque background for header */
+        .light .bg-opaque-card {
+            background-color: var(--card-light); /* Solid white */
         }
         .light .bg-accent1 {
             background-color: var(--accent1-light);
@@ -55,7 +62,12 @@
             color: var(--text-dark);
         }
         .dark .bg-card {
-            background-color: var(--card-dark);
+            background-color: rgba(34, 34, 34, 0.7); /* More transparent dark gray */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+        }
+        /* New opaque background for header */
+        .dark .bg-opaque-card {
+            background-color: var(--card-dark); /* Solid dark gray */
         }
         .dark .bg-accent1 {
             background-color: var(--accent1-dark);
@@ -79,6 +91,100 @@
         body {
             font-family: 'Inter', sans-serif; /* Default body font */
             transition: background-color 0.3s ease, color 0.3s ease;
+            position: relative; /* To contain the absolute positioned DNA elements */
+            overflow-x: hidden; /* Prevent horizontal scroll from background elements */
+        }
+
+        /* DNA Background - Dark Mode Only */
+        /* Large radial gradients for subtle shades */
+        .dark::before, .dark::after {
+            content: '';
+            position: absolute;
+            width: 800px; /* Large size */
+            height: 800px; /* Large size */
+            background: radial-gradient(circle, var(--dna-shadow-color) 0%, transparent 70%); /* Subtle white shade */
+            opacity: 1; /* Increased opacity for visibility */
+            border-radius: 50%;
+            z-index: -2; /* Ensure it's behind everything */
+            pointer-events: none; /* Make it unclickable */
+        }
+
+        .dark::before {
+            top: -200px;
+            left: -300px;
+            animation: rotateDNA1 30s linear infinite; /* Slow rotation */
+        }
+
+        .dark::after {
+            bottom: -300px;
+            right: -400px;
+            animation: rotateDNA2 45s linear infinite reverse; /* Slower, reverse rotation */
+            opacity: 0.9; /* Increased opacity */
+            transform: scale(0.8); /* Slightly smaller */
+        }
+
+        /* DNA Line Structure */
+        .dna-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Clip DNA parts that go out of bounds */
+            pointer-events: none;
+            z-index: -1; /* Above shades, but below content */
+        }
+
+        .dna-strand {
+            position: absolute;
+            width: 6px; /* Increased thickness of the strand */
+            height: 200vh; /* Make it very long to cover the entire page */
+            background: linear-gradient(to bottom, var(--dna-color) 0%, transparent 100%); /* Fades out at the bottom */
+            opacity: 0.6; /* Increased opacity for visibility */
+            top: -50vh; /* Start higher up to ensure full coverage */
+            animation: dnaFlow 60s linear infinite; /* Slow vertical flow */
+            transform-origin: center top;
+        }
+
+        .dna-strand:nth-child(1) {
+            left: 20%;
+            transform: rotate(15deg); /* Slight angle */
+            animation-delay: 0s;
+        }
+
+        .dna-strand:nth-child(2) {
+            left: 80%;
+            transform: rotate(-15deg); /* Opposite angle */
+            animation-delay: -30s; /* Offset animation for continuous look */
+        }
+
+        .dna-strand:nth-child(3) {
+            left: 50%;
+            transform: rotate(5deg);
+            opacity: 0.55; /* Slightly less opaque for the middle strand */
+            animation-delay: -10s;
+        }
+
+        /* Keyframe animations for background elements */
+        @keyframes rotateDNA1 {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotateDNA2 {
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        @keyframes dnaFlow {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh); /* Move down the height of the viewport */
+            }
         }
 
         /* Apply Montserrat to headings for a catchy look */
@@ -88,17 +194,19 @@
 
         /* Specific style for the brand name in the header */
         .brand-name {
-            font-family: 'Oswald', sans-serif; /* New catchy font */
-            background-image: linear-gradient(to right, var(--accent1-dark), var(--accent2-dark)); /* Gradient for dark mode */
+            font-family: 'Bebas Neue', sans-serif; /* New font */
+            background-image: linear-gradient(to bottom right, var(--accent1-dark), var(--accent2-dark));
             -webkit-background-clip: text;
             background-clip: text;
-            color: transparent; /* Make text transparent to show gradient */
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth in dark mode */
+            letter-spacing: 1.5px; /* Slightly increase letter spacing for visual impact */
         }
 
         .light .brand-name {
-            background-image: linear-gradient(to right, var(--accent1-light), var(--accent2-light)); /* Gradient for light mode */
+            background-image: linear-gradient(to bottom right, var(--accent1-light), var(--accent2-light));
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Lighter shadow for light mode */
         }
-
 
         /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
@@ -120,26 +228,27 @@
         }
 
         /* Fade-in animation for content sections */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         .fade-in-section {
             opacity: 0; /* Start hidden */
-            transform: translateY(20px);
+            transform: translateY(20px); /* Default for sections to come up */
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
 
         .fade-in-section.is-visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Hero Section specific animation override */
+        #hero-section {
+            opacity: 0;
+            transform: translateX(-100px); /* Start off-screen to the left */
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out; /* Dynamic transition */
+        }
+
+        #hero-section.is-visible {
+            opacity: 1;
+            transform: translateX(0); /* Slide in to original position */
         }
 
         /* Modal specific styles */
@@ -183,16 +292,126 @@
         .btn-fill-hover:hover {
             color: #FFFFFF; /* Text becomes white on hover */
         }
+
+        /* Bundle Card Hover Effect (Reverted 3D tilt) */
+        .bundle-card {
+            transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out, border-color 0.5s ease-in-out;
+            border-width: 1px;
+            border-style: solid;
+            /* Removed: transform-style: preserve-3d; */
+        }
+        /* Default border colors for bundle-card based on theme */
+        .light .bundle-card {
+            border-color: #E5E7EB; /* Equivalent to gray-200 */
+        }
+        .dark .bundle-card {
+            border-color: #374151; /* Equivalent to gray-700 */
+        }
+
+        .bundle-card:hover {
+            transform: translateY(-12px) scale(1.04); /* Reverted: removed rotateY(3deg) */
+        }
+        /* Richer shadow and border for light mode */
+        .light .bundle-card:hover {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); /* Even larger, richer shadow */
+            border-color: var(--accent1-light);
+        }
+        /* Richer shadow and border for dark mode */
+        .dark .bundle-card:hover {
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); /* Even darker, richer shadow for dark theme */
+            border-color: var(--accent1-dark);
+        }
+
+        /* Login button aesthetic */
+        #login-btn {
+            background-color: var(--card-light); /* Match back-to-top default */
+            color: var(--text-light); /* Match back-to-top default */
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Add transform to transition */
+        }
+
+        #login-btn:hover {
+            background-color: #E0E0E0; /* Light gray on hover in light mode, match back-to-top */
+            transform: scale(1.05); /* Add pop effect */
+        }
+
+        .dark #login-btn {
+            background-color: var(--card-dark); /* Match back-to-top dark mode */
+            color: var(--text-dark); /* Match back-to-top dark mode */
+        }
+
+        .dark #login-btn:hover {
+            background-color: var(--accent1-dark); /* Match back-to-top hover dark */
+            color: #FFFFFF; /* Match back-to-top hover dark */
+        }
+
+
+        /* Back to Top Button Styling */
+        #back-to-top {
+            /* Default to light mode colors first */
+            background-color: var(--card-light); /* White background in light mode */
+            color: var(--text-light); /* Dark text in light mode */
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #back-to-top:hover {
+            background-color: #E0E0E0; /* Light gray on hover in light mode */
+            transform: scale(1.05); /* Slight scale up on hover */
+        }
+
+        /* Dark mode specific styles for back to top button */
+        .dark #back-to-top {
+            background-color: var(--card-dark); /* Darker gray background in dark mode */
+            color: var(--text-dark); /* Light text in dark mode */
+        }
+
+        .dark #back-to-top:hover {
+            background-color: var(--accent1-dark); /* A subtle accent color for hover in dark mode */
+            color: #FFFFFF; /* Ensure text is visible on hover */
+        }
+
+        .transformation-card {
+            transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out, border-color 0.5s ease-in-out;
+            border-width: 1px;
+            border-style: solid;
+        }
+        /* Default border colors for transformation-card based on theme */
+        .light .transformation-card {
+            border-color: #E5E7EB; /* Equivalent to gray-200 */
+        }
+        .dark .transformation-card {
+            border-color: #374151; /* Equivalent to gray-700 */
+        }
+
+        .transformation-card:hover {
+            transform: translateY(-12px) scale(1.04);
+        }
+        /* Richer shadow and border for light mode */
+        .light .transformation-card:hover {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent1-light);
+        }
+        /* Richer shadow and border for dark mode */
+        .dark .transformation-card:hover {
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            border-color: var(--accent1-dark);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <header class="p-6 shadow-md flex justify-between items-center rounded-b-xl bg-card transition-colors duration-300 sticky top-0 z-10 flex-col md:flex-row">
+    <div class="dna-container hidden dark:block">
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+    </div>
+
+    <header class="p-6 shadow-md flex justify-between items-center rounded-b-xl bg-opaque-card transition-colors duration-300 sticky top-0 z-10 flex-col md:flex-row">
         <div class="flex items-center space-x-3 mb-4 md:mb-0">
             <i class="fas fa-dumbbell text-3xl text-accent1"></i>
             <h1 class="text-3xl font-bold brand-name">David's Peak Performance</h1> </div>
         <nav class="flex-grow flex justify-center md:justify-end">
             <ul class="flex flex-wrap justify-center space-x-4 md:space-x-6 text-lg font-medium">
                 <li><a href="#hero-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Home</a></li>
+                <li><a href="#transformations-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Transformations</a></li>
                 <li><a href="#bundles-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Bundles</a></li>
                 <li><a href="#reviews-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Reviews</a></li>
                 <li><a href="#about-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">About</a></li>
@@ -200,12 +419,22 @@
             </ul>
         </nav>
         <div class="flex items-center space-x-4 mt-4 md:mt-0">
+            <div id="auth-controls" class="flex items-center space-x-4">
+                <button id="login-btn" class="py-2 px-5 rounded-full shadow-md transition-colors duration-300 text-base font-semibold">
+                    Login
+                </button>
+                <span id="welcome-message" class="text-lg font-medium hidden"></span>
+                <button id="logout-btn" class="py-2 px-5 bg-red-600 text-white rounded-full shadow-md hover:bg-red-700 transition-colors duration-300 text-base font-semibold hidden">
+                    Logout
+                </button>
+            </div>
             <button id="theme-toggle" class="p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-accent1 transition-colors duration-300">
-                <i class="fas fa-moon text-lg" id="theme-icon"></i> </button>
+                <i class="fas fa-moon text-lg" id="theme-icon"></i>
+            </button>
         </div>
     </header>
 
-    <main class="flex-grow p-6 md:p-8 lg:p-10 space-y-16">
+    <main class="flex-grow p-6 md:p-8 lg:p-10 space-y-16 relative z-0">
         <section id="hero-section" class="fade-in-section text-center py-16 md:py-24 flex flex-col lg:flex-row items-center justify-center lg:space-x-12 px-6">
             <div class="lg:w-1/3 mb-8 lg:mb-0">
                 <img src="imgs/coach.png" alt="David the Gym Coach" class="rounded-xl w-80 h-[480px] object-cover mx-auto border-4 border-black">
@@ -217,17 +446,92 @@
                 <p class="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-6">
                     Your dedicated gym coach, empowering you to achieve your fitness goals with personalized plans, expert guidance, and unwavering support.
                 </p>
-                <a href="#bundles-section" id="explore-bundles-btn" class="inline-block py-3 px-8 bg-black text-white text-lg font-semibold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 btn-fill-hover">
+                <a href="#bundles-section" id="explore-bundles-btn" class="inline-block py-3 px-8 bg-black text-black dark:text-white text-lg font-semibold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 btn-fill-hover">
                     Explore Coaching Bundles <i class="fas fa-arrow-right ml-2"></i>
                 </a>
+            </div>
+        </section>
+
+        <section id="transformations-section" class="fade-in-section py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-accent1">Client Transformations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 transformation-card">
+                    <h3 class="text-2xl font-semibold text-accent2 mb-4">Sarah's Strength Journey</h3>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-4 w-full">
+                        <div class="relative w-full">
+                            <img src="https://placehold.co/250x300/e0e0e0/555555?text=Before" alt="Sarah Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">BEFORE</span>
+                        </div>
+                        <div class="relative w-full">
+                            <img src="https://placehold.co/250x300/a0a0a0/ffffff?text=After" alt="Sarah After" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <span class="absolute top-2 left-2 bg-accent1 text-white text-xs px-2 py-1 rounded">AFTER</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"Lost 30 lbs and gained incredible strength! David's guidance was a game-changer."</p>
+                    <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                            data-story-name="Sarah's Strength Journey"
+                            data-story-before-img="https://placehold.co/600x400/e0e0e0/555555?text=Sarah+Before"
+                            data-story-after-img="https://placehold.co/600x400/a0a0a0/ffffff?text=Sarah+After"
+                            data-story-quote="Lost 30 lbs and gained incredible strength! David's guidance was a game-changer."
+                            data-story-full="Sarah started her journey feeling low on energy and confidence. Through David's personalized strength training and nutrition plans, she not only shed 30 pounds but also discovered a newfound passion for weightlifting. Her dedication, combined with David's unwavering support, led to remarkable improvements in her physical and mental well-being.">
+                        View Story
+                    </button>
+                </div>
+
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 transformation-card">
+                    <h3 class="text-2xl font-semibold text-accent2 mb-4">Mark's Muscle Gain</h3>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-4 w-full">
+                        <div class="relative w-full">
+                            <img src="imgs/t2.png" alt="Mark Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">BEFORE</span>
+                        </div>
+                        <div class="relative w-full">
+                            <img src="imgs/t22.png" alt="Mark After" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <span class="absolute top-2 left-2 bg-accent1 text-white text-xs px-2 py-1 rounded">AFTER</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"Achieved my dream physique. David's structured approach to training and diet is unmatched."</p>
+                    <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                            data-story-name="Mark's Muscle Gain"
+                            data-story-before-img="imgs/t2.png"
+                            data-story-after-img="imgs/t22.png"
+                            data-story-quote="Achieved my dream physique. David's structured approach to training and diet is unmatched."
+                            data-story-full="Mark's goal was to build significant muscle mass and improve his overall strength. David designed a rigorous, progressive overload program combined with a high-protein, calorie-sufficient meal plan. Within months, Mark saw incredible gains in lean muscle, transforming his physique and boosting his confidence both inside and outside the gym.">
+                        View Story
+                    </button>
+                </div>
+
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 transformation-card">
+                    <h3 class="text-2xl font-semibold text-accent2 mb-4">Emily's Endurance Boost</h3>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-4 w-full">
+                        <div class="relative w-full">
+                            <img src="https://placehold.co/250x300/e0e0e0/555555?text=Before" alt="Emily Before" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">BEFORE</span>
+                        </div>
+                        <div class="relative w-full">
+                            <img src="https://placehold.co/250x300/a0a0a0/ffffff?text=After" alt="Emily After" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                            <span class="absolute top-2 left-2 bg-accent1 text-white text-xs px-2 py-1 rounded">AFTER</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"My stamina is through the roof! David helped me conquer my first marathon."</p>
+                    <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                            data-story-name="Emily's Endurance Boost"
+                            data-story-before-img="https://placehold.co/600x400/e0e0e0/555555?text=Emily+Before"
+                            data-story-after-img="https://placehold.co/600x400/a0a0a0/ffffff?text=Emily+After"
+                            data-story-quote="My stamina is through the roof! David helped me conquer my first marathon."
+                            data-story-full="Emily approached David with the ambitious goal of completing her first marathon. David crafted a progressive running and cross-training program, focusing on endurance, recovery, and proper fueling. Not only did Emily finish her marathon strong, but she also significantly improved her overall cardiovascular health and running technique, exceeding her own expectations.">
+                        View Story
+                    </button>
+                </div>
             </div>
         </section>
 
         <section id="bundles-section" class="fade-in-section py-16">
             <h2 class="text-4xl font-bold text-center mb-12 text-accent1">Our Coaching Bundles</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 transition-colors duration-300">
-                    <i class="fas fa-star text-5xl text-yellow-400 mb-4"></i> <h3 class="text-2xl font-semibold text-accent1 mb-2">Starter Pack</h3>
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 bundle-card">
+                    <i class="fas fa-star text-5xl text-yellow-400 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-accent1 mb-2">Starter Pack</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">Perfect for beginners, includes basic coaching and workout plans.</p>
                     <p class="text-4xl font-bold text-accent2 mb-4">$99<span class="text-lg text-gray-500">/month</span></p>
                     <ul class="list-none text-sm text-gray-700 dark:text-gray-300 mb-6 space-y-2">
@@ -235,7 +539,7 @@
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Basic Workout Library Access</li>
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Email Support</li>
                     </ul>
-                    <button class="bundle-button w-full py-3 px-6 bg-black text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="bundle-button w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-bundle-name="Starter Pack"
                             data-bundle-price="$99/month"
                             data-bundle-features="2 Coaching Sessions/Month, Basic Workout Library Access, Email Support"
@@ -245,8 +549,9 @@
                     </button>
                 </div>
 
-                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 transition-colors duration-300">
-                    <i class="fas fa-trophy text-5xl text-yellow-400 mb-4"></i> <h3 class="text-2xl font-semibold text-accent2 mb-2">Pro Plan</h3>
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 bundle-card">
+                    <i class="fas fa-trophy text-5xl text-yellow-400 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-accent2 mb-2">Pro Plan</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">Advanced coaching for serious fitness enthusiasts.</p>
                     <p class="text-4xl font-bold text-accent1 mb-4">$199<span class="text-lg text-gray-500">/month</span></p>
                     <ul class="list-none text-sm text-gray-700 dark:text-gray-300 mb-6 space-y-2">
@@ -255,7 +560,7 @@
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Priority Chat Support</li>
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Custom Meal Plans</li>
                     </ul>
-                    <button class="bundle-button w-full py-3 px-6 bg-black text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="bundle-button w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-bundle-name="Pro Plan"
                             data-bundle-price="$199/month"
                             data-bundle-features="4 Coaching Sessions/Month, Premium Workout Library Access, Priority Chat Support, Custom Meal Plans"
@@ -265,8 +570,9 @@
                     </button>
                 </div>
 
-                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 transition-colors duration-300">
-                    <i class="fas fa-crown text-5xl text-yellow-400 mb-4"></i> <h3 class="text-2xl font-semibold text-accent1 mb-2">Elite Coaching</h3>
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-colors duration-300 bundle-card">
+                    <i class="fas fa-crown text-5xl text-yellow-400 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-accent1 mb-2">Elite Coaching</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">Personalized, intensive coaching for peak performance.</p>
                     <p class="text-4xl font-bold text-accent2 mb-4">$349<span class="text-lg text-gray-500">/month</span></p>
                     <ul class="list-none text-sm text-gray-700 dark:text-gray-300 mb-6 space-y-2">
@@ -275,13 +581,14 @@
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>24/7 Direct Coach Access</li>
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Performance Analytics</li>
                     </ul>
-                    <button class="bundle-button w-full py-3 px-6 bg-black text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="bundle-button w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-bundle-name="Elite Coaching"
                             data-bundle-price="$349/month"
                             data-bundle-features="Unlimited Coaching Sessions, Full Workout & Nutrition Library, 24/7 Direct Coach Access, Performance Analytics"
                             data-bundle-subtitle="Achieve Peak Performance"
                             data-bundle-description="The Elite Coaching bundle provides the ultimate personalized fitness experience. With unlimited direct access to your coach, comprehensive workout and nutrition plans, and detailed performance analytics, this plan is designed for those committed to reaching their absolute peak physical condition.">
                         Choose Plan
+
                     </button>
                 </div>
             </div>
@@ -290,7 +597,7 @@
         <section id="reviews-section" class="fade-in-section py-16">
             <h2 class="text-4xl font-bold text-center mb-12 text-accent2">What Our Clients Say</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300 fade-in-section">
                     <div class="flex items-center mb-4">
                         <img src="https://placehold.co/50x50/555555/FFFFFF?text=JS" alt="John Smith" class="rounded-full w-12 h-12 object-cover mr-4">
                         <div>
@@ -303,7 +610,7 @@
                     <p class="text-gray-700 dark:text-gray-300 italic">"David's coaching transformed my fitness journey. His personalized approach and constant motivation helped me achieve results I never thought possible!"</p>
                 </div>
 
-                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300 fade-in-section">
                     <div class="flex items-center mb-4">
                         <img src="https://placehold.co/50x50/333333/FFFFFF?text=JD" alt="Jane Doe" class="rounded-full w-12 h-12 object-cover mr-4">
                         <div>
@@ -316,7 +623,7 @@
                     <p class="text-gray-700 dark:text-gray-300 italic">"I've tried many coaches, but David stands out. His knowledge and dedication are unparalleled. Highly recommend for anyone serious about their health."</p>
                 </div>
 
-                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300 fade-in-section">
                     <div class="flex items-center mb-4">
                         <img src="https://placehold.co/50x50/555555/FFFFFF?text=EW" alt="Emily White" class="rounded-full w-12 h-12 object-cover mr-4">
                         <div>
@@ -332,7 +639,7 @@
         </section>
 
         <section id="about-section" class="fade-in-section py-16">
-            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300">
+            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300 fade-in-section">
                 <h2 class="text-4xl font-bold mb-6 text-accent1">About David's Coaching</h2>
                 <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
                     David is a certified and highly experienced gym coach dedicated to helping individuals of all fitness levels achieve their health and wellness goals. With a passion for transformative results, David combines cutting-edge training methodologies with personalized support, ensuring every client receives a unique and effective path to success. His philosophy centers on building sustainable habits, fostering mental resilience, and celebrating every milestone, big or small. Join David and embark on a journey to a stronger, healthier, and more confident you.
@@ -341,7 +648,7 @@
         </section>
 
         <section id="contact-section" class="fade-in-section py-16">
-            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300">
+            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300 fade-in-section">
                 <h2 class="text-4xl font-bold mb-6 text-accent2">Get in Touch</h2>
                 <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
                     Ready to start your fitness journey? Contact David today!
@@ -363,7 +670,7 @@
         </section>
     </main>
 
-    <footer class="p-4 text-center text-sm text-gray-600 dark:text-gray-400 bg-card rounded-t-xl shadow-md transition-colors duration-300">
+    <footer class="p-4 text-center text-sm text-gray-600 dark:text-gray-400 bg-opaque-card rounded-t-xl shadow-md transition-colors duration-300">
         &copy; 2025 David's Gym Coach. All rights reserved.
     </footer>
 
@@ -380,11 +687,70 @@
             <p id="modal-bundle-description" class="text-md text-gray-700 dark:text-gray-300 mb-6 leading-relaxed"></p>
             <ul id="modal-bundle-features" class="list-none text-lg text-gray-700 dark:text-gray-300 mb-8 space-y-3">
                 </ul>
-            <button class="w-full py-3 px-6 bg-black text-white text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover">
+            <button class="w-full py-3 px-6 bg-black text-black dark:text-white text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover">
                 Proceed to Checkout
             </button>
         </div>
     </div>
+
+    <div id="story-modal" class="fixed inset-0 hidden flex items-center justify-center z-50 modal-overlay p-4">
+        <div class="bg-card rounded-xl shadow-2xl p-8 w-full max-w-2xl modal-content transform transition-all duration-300 scale-95 opacity-0">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="story-modal-name" class="text-3xl font-bold text-accent1"></h3>
+                <button id="story-modal-close-btn" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="relative">
+                    <img id="story-modal-before-img" src="" alt="Before Transformation" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                    <span class="absolute top-2 left-2 bg-black text-white text-sm px-2 py-1 rounded">BEFORE</span>
+                </div>
+                <div class="relative">
+                    <img id="story-modal-after-img" src="" alt="After Transformation" class="rounded-lg w-full h-auto object-cover border border-gray-300 dark:border-gray-600">
+                    <span class="absolute top-2 left-2 bg-accent1 text-white text-sm px-2 py-1 rounded">AFTER</span>
+                </div>
+            </div>
+            <p id="story-modal-quote" class="text-lg italic text-gray-700 dark:text-gray-300 mb-4"></p>
+            <p id="story-modal-full" class="text-md text-gray-700 dark:text-gray-300 leading-relaxed mb-6"></p>
+            <button class="w-full py-3 px-6 bg-black text-black dark:text-white text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover">
+                Contact David for Your Story
+            </button>
+        </div>
+    </div>
+
+    <div id="login-modal" class="fixed inset-0 hidden flex items-center justify-center z-50 modal-overlay p-4">
+        <div class="bg-card rounded-xl shadow-2xl p-8 w-full max-w-md modal-content transform transition-all duration-300 scale-95 opacity-0">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-3xl font-bold text-accent1">Client Login</h3>
+                <button id="login-modal-close-btn" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="username-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username / Email</label>
+                    <input type="text" id="username-input" name="username" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent1" required>
+                    <p id="username-error" class="text-red-500 text-sm mt-1 hidden">Please enter your username or email.</p>
+                </div>
+                <div>
+                    <label for="password-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                    <input type="password" id="password-input" name="password" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent1" required>
+                    <p id="password-error" class="text-red-500 text-sm mt-1 hidden">Please enter your password.</p>
+                </div>
+                <button type="submit" class="w-full py-3 px-6 bg-accent1 text-white text-lg font-semibold rounded-md shadow-md hover:bg-accent2 transition-all duration-300 btn-fill-hover">
+                    Log In
+                </button>
+            </form>
+            <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
+                This is a frontend demonstration. No actual authentication.
+            </p>
+        </div>
+    </div>
+
+    <button id="back-to-top" class="fixed bottom-6 right-6 p-4 rounded-full shadow-lg opacity-0 transform scale-0 focus:outline-none focus:ring-2 focus:ring-accent1">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </button>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -393,61 +759,93 @@
             const themeIcon = document.getElementById('theme-icon');
             const sections = document.querySelectorAll('.fade-in-section');
             const exploreBundlesBtn = document.getElementById('explore-bundles-btn');
-            const navLinks = document.querySelectorAll('.nav-link'); // Select all navigation links
+            const navLinks = document.querySelectorAll('.nav-link');
 
             const bundleButtons = document.querySelectorAll('.bundle-button');
             const bundleModal = document.getElementById('bundle-modal');
             const modalCloseBtn = document.getElementById('modal-close-btn');
             const modalBundleName = document.getElementById('modal-bundle-name');
-            const modalBundleSubtitle = document.getElementById('modal-bundle-subtitle'); // New element
+            const modalBundleSubtitle = document.getElementById('modal-bundle-subtitle');
             const modalBundlePrice = document.getElementById('modal-bundle-price');
-            const modalBundleDescription = document.getElementById('modal-bundle-description'); // New element
+            const modalBundleDescription = document.getElementById('modal-bundle-description');
             const modalBundleFeatures = document.getElementById('modal-bundle-features');
-            const modalContent = bundleModal.querySelector('.modal-content');
+            const bundleModalContent = bundleModal.querySelector('.modal-content');
 
+            // Transformation Story Modal Elements
+            const viewStoryButtons = document.querySelectorAll('.view-story-btn');
+            const storyModal = document.getElementById('story-modal');
+            const storyModalCloseBtn = document.getElementById('story-modal-close-btn');
+            const storyModalName = document.getElementById('story-modal-name');
+            const storyModalBeforeImg = document.getElementById('story-modal-before-img');
+            const storyModalAfterImg = document.getElementById('story-modal-after-img');
+            const storyModalQuote = document.getElementById('story-modal-quote');
+            const storyModalFull = document.getElementById('story-modal-full');
+            const storyModalContent = storyModal.querySelector('.modal-content');
+
+
+            // Login Modal Elements
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const welcomeMessage = document.getElementById('welcome-message');
+            const loginModal = document.getElementById('login-modal');
+            const loginModalCloseBtn = document.getElementById('login-modal-close-btn');
+            const loginForm = document.getElementById('login-form');
+            const usernameInput = document.getElementById('username-input');
+            const passwordInput = document.getElementById('password-input');
+            const usernameError = document.getElementById('username-error');
+            const passwordError = document.getElementById('password-error');
+            const loginModalContent = loginModal.querySelector('.modal-content');
+
+            // Back to Top button
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            // DNA Container
+            const dnaContainer = document.querySelector('.dna-container');
 
             // --- Theme Toggle Functionality ---
-            // Check for saved theme preference or default to dark
             const currentTheme = localStorage.getItem('theme') || 'dark';
             if (currentTheme === 'dark') {
                 html.classList.add('dark');
                 html.classList.remove('light');
-                themeIcon.classList.remove('fa-sun'); // Remove sun icon
-                themeIcon.classList.add('fa-moon'); // Add moon icon for dark mode
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                dnaContainer.classList.remove('hidden'); // Show DNA in dark mode
             } else {
                 html.classList.add('light');
                 html.classList.remove('dark');
-                themeIcon.classList.remove('fa-moon'); // Remove moon icon
-                themeIcon.classList.add('fa-sun'); // Add sun icon for light mode
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+                dnaContainer.classList.add('hidden'); // Hide DNA in light mode
             }
 
             themeToggle.addEventListener('click', () => {
                 if (html.classList.contains('light')) {
-                    // Currently light, switching to dark
                     html.classList.remove('light');
                     html.classList.add('dark');
-                    themeIcon.classList.remove('fa-sun'); // Remove sun
-                    themeIcon.classList.add('fa-moon'); // Add moon
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
                     localStorage.setItem('theme', 'dark');
+                    dnaContainer.classList.remove('hidden'); // Show DNA
                 } else {
-                    // Currently dark, switching to light
                     html.classList.remove('dark');
                     html.classList.add('light');
-                    themeIcon.classList.remove('fa-moon'); // Remove moon
-                    themeIcon.classList.add('fa-sun'); // Add sun
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
                     localStorage.setItem('theme', 'light');
+                    dnaContainer.classList.add('hidden'); // Hide DNA
                 }
             });
 
-            // --- Smooth Scroll for Navigation Links and "Explore Coaching Bundles" button ---
+            // --- Smooth Scroll Functionality ---
             const smoothScroll = (event) => {
-                event.preventDefault(); // Prevent default anchor link behavior
-                const targetId = event.currentTarget.getAttribute('href').substring(1); // Get target section ID
+                event.preventDefault();
+                const targetId = event.currentTarget.getAttribute('href').substring(1);
                 const targetSection = document.getElementById(targetId);
 
                 if (targetSection) {
                     targetSection.scrollIntoView({
-                        behavior: 'smooth' // Smooth scroll effect
+                        behavior: 'smooth'
                     });
                 }
             };
@@ -455,31 +853,46 @@
             if (exploreBundlesBtn) {
                 exploreBundlesBtn.addEventListener('click', smoothScroll);
             }
-
             navLinks.forEach(link => {
                 link.addEventListener('click', smoothScroll);
             });
 
-            // --- Fade-in on Scroll Functionality ---
+            // --- Fade-in on Scroll Functionality (Generalized) ---
             const observerOptions = {
-                root: null, // relative to the viewport
+                root: null,
                 rootMargin: '0px',
-                threshold: 0.1 // Trigger when 10% of the item is visible
+                threshold: 0.1
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target); // Stop observing once it's visible
+                        observer.unobserve(entry.target);
                     }
                 });
             }, observerOptions);
 
-            // Observe each section
             sections.forEach(section => {
                 observer.observe(section);
             });
+
+            // --- Modal Helpers ---
+            function openModal(modalElement, contentElement) {
+                modalElement.classList.remove('hidden');
+                setTimeout(() => {
+                    contentElement.classList.remove('opacity-0', 'scale-95');
+                    contentElement.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            }
+
+            function closeModal(modalElement, contentElement) {
+                contentElement.classList.remove('opacity-100', 'scale-100');
+                contentElement.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    modalElement.classList.add('hidden');
+                }, 300);
+            }
 
             // --- Bundle Modal Functionality ---
             bundleButtons.forEach(button => {
@@ -487,50 +900,155 @@
                     const bundleName = button.dataset.bundleName;
                     const bundlePrice = button.dataset.bundlePrice;
                     const bundleFeatures = button.dataset.bundleFeatures.split(', ');
-                    const bundleSubtitle = button.dataset.bundleSubtitle || ''; // New: Get subtitle
-                    const bundleDescription = button.dataset.bundleDescription || ''; // New: Get description
+                    const bundleSubtitle = button.dataset.bundleSubtitle || '';
+                    const bundleDescription = button.dataset.bundleDescription || '';
 
                     modalBundleName.textContent = bundleName;
-                    modalBundleSubtitle.textContent = bundleSubtitle; // Set subtitle
+                    modalBundleSubtitle.textContent = bundleSubtitle;
                     modalBundlePrice.textContent = bundlePrice;
-                    modalBundleDescription.textContent = bundleDescription; // Set description
+                    modalBundleDescription.textContent = bundleDescription;
 
-                    // Clear previous features
                     modalBundleFeatures.innerHTML = '';
-                    // Add new features
                     bundleFeatures.forEach(feature => {
                         const li = document.createElement('li');
                         li.className = 'flex items-center';
                         li.innerHTML = `<i class="fas fa-check-circle text-green-500 mr-3"></i><span>${feature}</span>`;
                         modalBundleFeatures.appendChild(li);
                     });
-
-                    bundleModal.classList.remove('hidden');
-                    // Add animation classes
-                    setTimeout(() => {
-                        modalContent.classList.remove('opacity-0', 'scale-95');
-                        modalContent.classList.add('opacity-100', 'scale-100');
-                    }, 10); // Small delay to ensure hidden is removed first for transition
+                    openModal(bundleModal, bundleModalContent);
                 });
             });
 
-            modalCloseBtn.addEventListener('click', () => {
-                modalContent.classList.remove('opacity-100', 'scale-100');
-                modalContent.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => {
-                    bundleModal.classList.add('hidden');
-                }, 300); // Wait for transition to complete before hiding
-            });
-
-            // Close modal when clicking outside of it
+            modalCloseBtn.addEventListener('click', () => closeModal(bundleModal, bundleModalContent));
             bundleModal.addEventListener('click', (event) => {
                 if (event.target === bundleModal) {
-                    modalContent.classList.remove('opacity-100', 'scale-100');
-                    modalContent.classList.add('opacity-0', 'scale-95');
-                    setTimeout(() => {
-                        bundleModal.classList.add('hidden');
-                    }, 300); // Wait for transition to complete before hiding
+                    closeModal(bundleModal, bundleModalContent);
                 }
+            });
+
+            // --- Transformation Story Modal Functionality ---
+            viewStoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const storyName = button.dataset.storyName;
+                    const storyBeforeImg = button.dataset.storyBeforeImg;
+                    const storyAfterImg = button.dataset.storyAfterImg;
+                    const storyQuote = button.dataset.storyQuote;
+                    const storyFull = button.dataset.storyFull;
+
+                    storyModalName.textContent = storyName;
+                    storyModalBeforeImg.src = storyBeforeImg;
+                    storyModalAfterImg.src = storyAfterImg;
+                    storyModalQuote.textContent = `"${storyQuote}"`;
+                    storyModalFull.textContent = storyFull;
+
+                    openModal(storyModal, storyModalContent);
+                });
+            });
+
+            storyModalCloseBtn.addEventListener('click', () => closeModal(storyModal, storyModalContent));
+            storyModal.addEventListener('click', (event) => {
+                if (event.target === storyModal) {
+                    closeModal(storyModal, storyModalContent);
+                }
+            });
+
+            // --- Login/Logout Functionality ---
+            function updateAuthUI(isLoggedIn, username = '') {
+                const welcomeMessageElement = document.getElementById('welcome-message');
+                const logoutBtnElement = document.getElementById('logout-btn');
+
+                if (isLoggedIn) {
+                    loginBtn.classList.add('hidden');
+                    welcomeMessageElement.classList.remove('hidden');
+                    logoutBtnElement.classList.remove('hidden');
+                    welcomeMessageElement.textContent = `Welcome, ${username}!`;
+                } else {
+                    loginBtn.classList.remove('hidden');
+                    welcomeMessageElement.classList.add('hidden');
+                    logoutBtnElement.classList.add('hidden');
+                    welcomeMessageElement.textContent = ''; // Clear message
+                }
+            }
+
+            function checkLoginStatus() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                const username = localStorage.getItem('username') || 'Guest';
+                updateAuthUI(isLoggedIn, username);
+            }
+
+            // Initial check on page load
+            checkLoginStatus();
+
+            loginBtn.addEventListener('click', () => {
+                openModal(loginModal, loginModalContent);
+                // Clear any previous errors or input values
+                usernameInput.value = '';
+                passwordInput.value = '';
+                usernameError.classList.add('hidden');
+                passwordError.classList.add('hidden');
+            });
+
+            loginModalCloseBtn.addEventListener('click', () => closeModal(loginModal, loginModalContent));
+            loginModal.addEventListener('click', (event) => {
+                if (event.target === loginModal) {
+                    closeModal(loginModal, loginModalContent);
+                }
+            });
+
+            loginForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                let isValid = true;
+
+                // Simple validation
+                if (usernameInput.value.trim() === '') {
+                    usernameError.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    usernameError.classList.add('hidden');
+                }
+
+                if (passwordInput.value.trim() === '') {
+                    passwordError.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    passwordError.classList.add('hidden');
+                }
+
+                if (isValid) {
+                    // Simulate successful login
+                    const enteredUsername = usernameInput.value.trim();
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', enteredUsername);
+                    updateAuthUI(true, enteredUsername);
+                    closeModal(loginModal, loginModalContent);
+                    alert(`Welcome back, ${enteredUsername}!`);
+                }
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                updateAuthUI(false);
+                alert('You have been logged out.');
+            });
+
+            // --- Back to Top Button Functionality ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    backToTopBtn.classList.remove('opacity-0', 'scale-0');
+                    backToTopBtn.classList.add('opacity-100', 'scale-100');
+                } else {
+                    backToTopBtn.classList.remove('opacity-100', 'scale-100');
+                    backToTopBtn.classList.add('opacity-0', 'scale-0');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             });
         });
     </script>
