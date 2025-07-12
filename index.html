@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" class="dark"> <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>David's Gym Coach - Your Fitness Journey Starts Here</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Tailwind Configuration for themes (Monochrome Palette) */
+        :root {
+            /* Light Mode Colors */
+            --background-light: #F8F8F8; /* Very light gray */
+            --text-light: #222222;       /* Very dark gray */
+            --card-light: #FFFFFF;       /* Pure white */
+            --accent1-light: #333333;    /* Dark gray for primary accent */
+            --accent2-light: #555555;    /* Medium gray for secondary accent */
+
+            /* Dark Mode Colors */
+            --background-dark: #121212; /* Almost black */
+            --text-dark: #E0E0E0;       /* Light gray */
+            --card-dark: #222222;       /* Darker gray for cards */
+            --accent1-dark: #BBBBBB;    /* Light gray for primary accent */
+            --accent2-dark: #999999;    /* Medium light gray for secondary accent */
+        }
+
+        .light {
+            background-color: var(--background-light);
+            color: var(--text-light);
+        }
+        .light .bg-card {
+            background-color: var(--card-light);
+        }
+        .light .bg-accent1 {
+            background-color: var(--accent1-light);
+        }
+        .light .text-accent1 {
+            color: var(--accent1-light);
+        }
+        .light .bg-accent2 {
+            background-color: var(--accent2-light);
+        }
+        .light .hover-bg-accent1:hover {
+            background-color: var(--accent1-light);
+        }
+        .light .hover-text-accent1:hover {
+            color: var(--accent1-light);
+        }
+        .light .border-accent1 {
+            border-color: var(--accent1-light);
+        }
+
+        .dark {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+        .dark .bg-card {
+            background-color: var(--card-dark);
+        }
+        .dark .bg-accent1 {
+            background-color: var(--accent1-dark);
+        }
+        .dark .text-accent1 {
+            color: var(--accent1-dark);
+        }
+        .dark .bg-accent2 {
+            background-color: var(--accent2-dark);
+        }
+        .dark .hover-bg-accent1:hover {
+            background-color: var(--accent1-dark);
+        }
+        .dark .hover-text-accent1:hover {
+            color: var(--accent1-dark);
+        }
+        .dark .border-accent1 {
+            border-color: var(--accent1-dark);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Default body font */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Apply Montserrat to headings for a catchy look */
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Specific style for the brand name in the header */
+        .brand-name {
+            font-family: 'Oswald', sans-serif; /* New catchy font */
+            background-image: linear-gradient(to right, var(--accent1-dark), var(--accent2-dark)); /* Gradient for dark mode */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; /* Make text transparent to show gradient */
+        }
+
+        .light .brand-name {
+            background-image: linear-gradient(to right, var(--accent1-light), var(--accent2-light)); /* Gradient for light mode */
+        }
+
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent1-dark); /* Default dark mode accent */
+            border-radius: 10px;
+        }
+
+        .light ::-webkit-scrollbar-thumb {
+            background: var(--accent1-light); /* Light mode accent */
+        }
+
+        /* Fade-in animation for content sections */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-section {
+            opacity: 0; /* Start hidden */
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+
+        /* New button fill animation styles */
+        .btn-fill-hover {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.4s ease-in-out;
+        }
+
+        .btn-fill-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-in-out;
+            background-color: #808080; /* Grey fill on hover */
+        }
+
+        .btn-fill-hover:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Adjust text color for buttons on hover to ensure readability */
+        .btn-fill-hover:hover {
+            color: #FFFFFF; /* Text becomes white on hover */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="p-6 shadow-md flex justify-between items-center rounded-b-xl bg-card transition-colors duration-300 sticky top-0 z-10 flex-col md:flex-row">
+        <div class="flex items-center space-x-3 mb-4 md:mb-0">
+            <i class="fas fa-dumbbell text-3xl text-accent1"></i>
+            <h1 class="text-3xl font-bold brand-name">David's Peak Performance</h1> </div>
+        <nav class="flex-grow flex justify-center md:justify-end">
+            <ul class="flex flex-wrap justify-center space-x-4 md:space-x-6 text-lg font-medium">
+                <li><a href="#hero-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Home</a></li>
+                <li><a href="#bundles-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Bundles</a></li>
+                <li><a href="#reviews-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Reviews</a></li>
+                <li><a href="#about-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">About</a></li>
+                <li><a href="#contact-section" class="nav-link hover-text-accent1 transition-colors duration-200 py-2 px-3 rounded-md">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="flex items-center space-x-4 mt-4 md:mt-0">
+            <button id="theme-toggle" class="p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-accent1 transition-colors duration-300">
+                <i class="fas fa-moon text-lg" id="theme-icon"></i> </button>
+        </div>
+    </header>
+
+    <main class="flex-grow p-6 md:p-8 lg:p-10 space-y-16">
+        <section id="hero-section" class="fade-in-section text-center py-16 md:py-24 flex flex-col lg:flex-row items-center justify-center lg:space-x-12 px-6">
+            <div class="lg:w-1/3 mb-8 lg:mb-0">
+                <img src="imgs/coach.png" alt="David the Gym Coach" class="rounded-xl w-80 h-[480px] object-cover mx-auto border-4 border-black">
+            </div>
+            <div class="lg:w-2/3 text-center lg:text-left">
+                <h2 class="text-5xl md:text-6xl font-extrabold leading-tight mb-4 text-accent1">
+                    Unlock Your Potential with David
+                </h2>
+                <p class="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-6">
+                    Your dedicated gym coach, empowering you to achieve your fitness goals with personalized plans, expert guidance, and unwavering support.
+                </p>
+                <a href="#bundles-section" id="explore-bundles-btn" class="inline-block py-3 px-8 bg-black text-white text-lg font-semibold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 btn-fill-hover">
+                    Explore Coaching Bundles <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </section>
+
+        <section id="bundles-section" class="fade-in-section py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-accent1">Our Coaching Bundles</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                    <i class="fas fa-star text-5xl text-yellow-400 mb-4"></i> <h3 class="text-2xl font-semibold text-accent1 mb-2">Starter Pack</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">Perfect for beginners, includes basic coaching and workout plans.</p>
+                    <p class="text-4xl font-bold text-accent2 mb-4">$99<span class="text-lg text-gray-500">/month</span></p>
+                    <ul class="list-none text-sm text-gray-700 dark:text-gray-300 mb-6 space-y-2">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>2 Coaching Sessions/Month</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Basic Workout Library Access</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Email Support</li>
+                    </ul>
+                    <button class="bundle-button w-full py-3 px-6 bg-black text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                            data-bundle-name="Starter Pack"
+                            data-bundle-price="$99/month"
+                            data-bundle-features="2 Coaching Sessions/Month, Basic Workout Library Access, Email Support"
+                            data-bundle-subtitle="Your First Step to Fitness"
+                            data-bundle-description="The Starter Pack is ideal for individuals beginning their fitness journey. It provides essential coaching and resources to build a strong foundation. You'll receive personalized guidance and access to a curated library of workouts to kickstart your progress.">
+                        Choose Plan
+                    </button>
+                </div>
+
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                    <i class="fas fa-trophy text-5xl text-yellow-400 mb-4"></i> <h3 class="text-2xl font-semibold text-accent2 mb-2">Pro Plan</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">Advanced coaching for serious fitness enthusiasts.</p>
+                    <p class="text-4xl font-bold text-accent1 mb-4">$199<span class="text-lg text-gray-500">/month</span></p>
+                    <ul class="list-none text-sm text-gray-700 dark:text-gray-300 mb-6 space-y-2">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>4 Coaching Sessions/Month</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Premium Workout Library Access</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Priority Chat Support</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Custom Meal Plans</li>
+                    </ul>
+                    <button class="bundle-button w-full py-3 px-6 bg-black text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                            data-bundle-name="Pro Plan"
+                            data-bundle-price="$199/month"
+                            data-bundle-features="4 Coaching Sessions/Month, Premium Workout Library Access, Priority Chat Support, Custom Meal Plans"
+                            data-bundle-subtitle="Elevate Your Training"
+                            data-bundle-description="The Pro Plan is designed for intermediate to advanced fitness enthusiasts looking to push their limits. It offers more frequent coaching, extensive workout resources, and personalized meal planning to optimize your performance and accelerate your results.">
+                        Choose Plan
+                    </button>
+                </div>
+
+                <div class="bg-card p-6 rounded-xl shadow-lg flex flex-col items-center text-center border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                    <i class="fas fa-crown text-5xl text-yellow-400 mb-4"></i> <h3 class="text-2xl font-semibold text-accent1 mb-2">Elite Coaching</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">Personalized, intensive coaching for peak performance.</p>
+                    <p class="text-4xl font-bold text-accent2 mb-4">$349<span class="text-lg text-gray-500">/month</span></p>
+                    <ul class="list-none text-sm text-gray-700 dark:text-gray-300 mb-6 space-y-2">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Unlimited Coaching Sessions</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Full Workout & Nutrition Library</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>24/7 Direct Coach Access</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Performance Analytics</li>
+                    </ul>
+                    <button class="bundle-button w-full py-3 px-6 bg-black text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                            data-bundle-name="Elite Coaching"
+                            data-bundle-price="$349/month"
+                            data-bundle-features="Unlimited Coaching Sessions, Full Workout & Nutrition Library, 24/7 Direct Coach Access, Performance Analytics"
+                            data-bundle-subtitle="Achieve Peak Performance"
+                            data-bundle-description="The Elite Coaching bundle provides the ultimate personalized fitness experience. With unlimited direct access to your coach, comprehensive workout and nutrition plans, and detailed performance analytics, this plan is designed for those committed to reaching their absolute peak physical condition.">
+                        Choose Plan
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="reviews-section" class="fade-in-section py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-accent2">What Our Clients Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/50x50/555555/FFFFFF?text=JS" alt="John Smith" class="rounded-full w-12 h-12 object-cover mr-4">
+                        <div>
+                            <p class="font-semibold text-lg">John Smith</p>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 italic">"David's coaching transformed my fitness journey. His personalized approach and constant motivation helped me achieve results I never thought possible!"</p>
+                </div>
+
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/50x50/333333/FFFFFF?text=JD" alt="Jane Doe" class="rounded-full w-12 h-12 object-cover mr-4">
+                        <div>
+                            <p class="font-semibold text-lg">Jane Doe</p>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 italic">"I've tried many coaches, but David stands out. His knowledge and dedication are unparalleled. Highly recommend for anyone serious about their health."</p>
+                </div>
+
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/50x50/555555/FFFFFF?text=EW" alt="Emily White" class="rounded-full w-12 h-12 object-cover mr-4">
+                        <div>
+                            <p class="font-semibold text-lg">Emily White</p>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 italic">"From diet tips to workout routines, David provided comprehensive support. My energy levels are up, and I feel stronger than ever!"</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about-section" class="fade-in-section py-16">
+            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300">
+                <h2 class="text-4xl font-bold mb-6 text-accent1">About David's Coaching</h2>
+                <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
+                    David is a certified and highly experienced gym coach dedicated to helping individuals of all fitness levels achieve their health and wellness goals. With a passion for transformative results, David combines cutting-edge training methodologies with personalized support, ensuring every client receives a unique and effective path to success. His philosophy centers on building sustainable habits, fostering mental resilience, and celebrating every milestone, big or small. Join David and embark on a journey to a stronger, healthier, and more confident you.
+                </p>
+            </div>
+        </section>
+
+        <section id="contact-section" class="fade-in-section py-16">
+            <div class="bg-card p-8 rounded-xl shadow-lg text-center transition-colors duration-300">
+                <h2 class="text-4xl font-bold mb-6 text-accent2">Get in Touch</h2>
+                <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
+                    Ready to start your fitness journey? Contact David today!
+                </p>
+                <div class="flex flex-col items-center space-y-4">
+                    <a href="mailto:david@gymcoach.com" class="text-xl text-accent1 hover-text-accent2 transition-colors duration-200">
+                        <i class="fas fa-envelope mr-2"></i> david@gymcoach.com
+                    </a>
+                    <a href="tel:+1234567890" class="text-xl text-accent1 hover-text-accent2 transition-colors duration-200">
+                        <i class="fas fa-phone mr-2"></i> +1 (234) 567-890
+                    </a>
+                    <div class="flex space-x-6 mt-4">
+                        <a href="#" class="text-accent1 hover-text-accent2 text-3xl transition-colors duration-200"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-accent1 hover-text-accent2 text-3xl transition-colors duration-200"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-accent1 hover-text-accent2 text-3xl transition-colors duration-200"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="p-4 text-center text-sm text-gray-600 dark:text-gray-400 bg-card rounded-t-xl shadow-md transition-colors duration-300">
+        &copy; 2025 David's Gym Coach. All rights reserved.
+    </footer>
+
+    <div id="bundle-modal" class="fixed inset-0 hidden flex items-center justify-center z-50 modal-overlay p-4">
+        <div class="bg-card rounded-xl shadow-2xl p-8 w-full max-w-md modal-content transform transition-all duration-300 scale-95 opacity-0">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modal-bundle-name" class="text-3xl font-bold text-accent1"></h3>
+                <button id="modal-close-btn" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p id="modal-bundle-subtitle" class="text-lg text-gray-600 dark:text-gray-400 mb-4"></p>
+            <p id="modal-bundle-price" class="text-4xl font-bold text-accent2 mb-6"></p>
+            <p id="modal-bundle-description" class="text-md text-gray-700 dark:text-gray-300 mb-6 leading-relaxed"></p>
+            <ul id="modal-bundle-features" class="list-none text-lg text-gray-700 dark:text-gray-300 mb-8 space-y-3">
+                </ul>
+            <button class="w-full py-3 px-6 bg-black text-white text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const sections = document.querySelectorAll('.fade-in-section');
+            const exploreBundlesBtn = document.getElementById('explore-bundles-btn');
+            const navLinks = document.querySelectorAll('.nav-link'); // Select all navigation links
+
+            const bundleButtons = document.querySelectorAll('.bundle-button');
+            const bundleModal = document.getElementById('bundle-modal');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const modalBundleName = document.getElementById('modal-bundle-name');
+            const modalBundleSubtitle = document.getElementById('modal-bundle-subtitle'); // New element
+            const modalBundlePrice = document.getElementById('modal-bundle-price');
+            const modalBundleDescription = document.getElementById('modal-bundle-description'); // New element
+            const modalBundleFeatures = document.getElementById('modal-bundle-features');
+            const modalContent = bundleModal.querySelector('.modal-content');
+
+
+            // --- Theme Toggle Functionality ---
+            // Check for saved theme preference or default to dark
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            if (currentTheme === 'dark') {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                themeIcon.classList.remove('fa-sun'); // Remove sun icon
+                themeIcon.classList.add('fa-moon'); // Add moon icon for dark mode
+            } else {
+                html.classList.add('light');
+                html.classList.remove('dark');
+                themeIcon.classList.remove('fa-moon'); // Remove moon icon
+                themeIcon.classList.add('fa-sun'); // Add sun icon for light mode
+            }
+
+            themeToggle.addEventListener('click', () => {
+                if (html.classList.contains('light')) {
+                    // Currently light, switching to dark
+                    html.classList.remove('light');
+                    html.classList.add('dark');
+                    themeIcon.classList.remove('fa-sun'); // Remove sun
+                    themeIcon.classList.add('fa-moon'); // Add moon
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    // Currently dark, switching to light
+                    html.classList.remove('dark');
+                    html.classList.add('light');
+                    themeIcon.classList.remove('fa-moon'); // Remove moon
+                    themeIcon.classList.add('fa-sun'); // Add sun
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // --- Smooth Scroll for Navigation Links and "Explore Coaching Bundles" button ---
+            const smoothScroll = (event) => {
+                event.preventDefault(); // Prevent default anchor link behavior
+                const targetId = event.currentTarget.getAttribute('href').substring(1); // Get target section ID
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth' // Smooth scroll effect
+                    });
+                }
+            };
+
+            if (exploreBundlesBtn) {
+                exploreBundlesBtn.addEventListener('click', smoothScroll);
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', smoothScroll);
+            });
+
+            // --- Fade-in on Scroll Functionality ---
+            const observerOptions = {
+                root: null, // relative to the viewport
+                rootMargin: '0px',
+                threshold: 0.1 // Trigger when 10% of the item is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Stop observing once it's visible
+                    }
+                });
+            }, observerOptions);
+
+            // Observe each section
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- Bundle Modal Functionality ---
+            bundleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const bundleName = button.dataset.bundleName;
+                    const bundlePrice = button.dataset.bundlePrice;
+                    const bundleFeatures = button.dataset.bundleFeatures.split(', ');
+                    const bundleSubtitle = button.dataset.bundleSubtitle || ''; // New: Get subtitle
+                    const bundleDescription = button.dataset.bundleDescription || ''; // New: Get description
+
+                    modalBundleName.textContent = bundleName;
+                    modalBundleSubtitle.textContent = bundleSubtitle; // Set subtitle
+                    modalBundlePrice.textContent = bundlePrice;
+                    modalBundleDescription.textContent = bundleDescription; // Set description
+
+                    // Clear previous features
+                    modalBundleFeatures.innerHTML = '';
+                    // Add new features
+                    bundleFeatures.forEach(feature => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-center';
+                        li.innerHTML = `<i class="fas fa-check-circle text-green-500 mr-3"></i><span>${feature}</span>`;
+                        modalBundleFeatures.appendChild(li);
+                    });
+
+                    bundleModal.classList.remove('hidden');
+                    // Add animation classes
+                    setTimeout(() => {
+                        modalContent.classList.remove('opacity-0', 'scale-95');
+                        modalContent.classList.add('opacity-100', 'scale-100');
+                    }, 10); // Small delay to ensure hidden is removed first for transition
+                });
+            });
+
+            modalCloseBtn.addEventListener('click', () => {
+                modalContent.classList.remove('opacity-100', 'scale-100');
+                modalContent.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    bundleModal.classList.add('hidden');
+                }, 300); // Wait for transition to complete before hiding
+            });
+
+            // Close modal when clicking outside of it
+            bundleModal.addEventListener('click', (event) => {
+                if (event.target === bundleModal) {
+                    modalContent.classList.remove('opacity-100', 'scale-100');
+                    modalContent.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => {
+                        bundleModal.classList.add('hidden');
+                    }, 300); // Wait for transition to complete before hiding
+                }
+            });
+        });
+    </script>
+</body>
+</html>
