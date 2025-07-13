@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="dark"> <head>
+<html lang="en" class="dark">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>David's Gym Coach - Your Fitness Journey Starts Here</title>
@@ -11,10 +12,14 @@
         :root {
             /* Light Mode Colors */
             --background-light: #F8F8F8; /* Very light gray */
-            --text-light: #222222;       /* Very dark gray */
+            --text-light: #000000;       /* Changed to black for light mode */
             --card-light: #FFFFFF;       /* Pure white */
-            --accent1-light: #333333;    /* Dark gray for primary accent */
-            --accent2-light: #555555;    /* Medium gray for secondary accent */
+            --accent1-light: #000000;    /* Changed to black for light mode */
+            --accent2-light: #000000;    /* Changed to black for light mode */
+            --border-coach-picture: #000000; /* Default border color for coach picture */
+            --theme-toggle-bg-light: #F0F0F0; /* Off-white for theme toggle button in light mode */
+            --dna-color-light: rgba(0, 0, 0, 0.9); /* Black for DNA lines in light mode (increased opacity for darker strings) */
+            --dna-shadow-color-light: rgba(0, 0, 0, 0.4); /* Darker black for DNA shades in light mode (increased opacity) */
 
             /* Dark Mode Colors */
             --background-dark: #121212; /* Almost black */
@@ -22,13 +27,16 @@
             --card-dark: #222222;       /* Darker gray for cards */
             --accent1-dark: #BBBBBB;    /* Light gray for primary accent */
             --accent2-dark: #999999;    /* Medium light gray for secondary accent */
-            --dna-color: rgba(255, 255, 255, 0.45); /* Increased subtlety for DNA lines */
-            --dna-shadow-color: rgba(255, 255, 255, 0.2); /* Increased subtlety for DNA shades */
+            --dna-color-dark: rgba(255, 255, 255, 0.45); /* Increased subtlety for DNA lines */
+            --dna-shadow-color-dark: rgba(255, 255, 255, 0.2); /* Increased subtlety for DNA shades */
         }
 
         .light {
             background-color: var(--background-light);
             color: var(--text-light);
+            --border-coach-picture: #FFFFFF; /* White border for coach picture in light mode */
+            --dna-color: var(--dna-color-light); /* Apply light DNA colors */
+            --dna-shadow-color: var(--dna-shadow-color-light); /* Apply light DNA shadow colors */
         }
         .light .bg-card {
             background-color: rgba(255, 255, 255, 0.7); /* More transparent white */
@@ -45,7 +53,7 @@
             color: var(--accent1-light);
         }
         .light .bg-accent2 {
-            background-color: var(--accent2-light);
+            color: var(--accent2-light);
         }
         .light .hover-bg-accent1:hover {
             background-color: var(--accent1-light);
@@ -57,9 +65,51 @@
             border-color: var(--accent1-light);
         }
 
+        /* Force all gray text classes to be black in light mode */
+        .light .text-gray-700,
+        .light .text-gray-600,
+        .light .text-gray-500,
+        .light .text-gray-300,
+        .light .text-gray-800 {
+            color: var(--text-light) !important;
+        }
+
+        /* Ensure specific elements that use accent colors also turn black in light mode */
+        .light .text-accent1,
+        .light .text-accent2,
+        .light .hover-text-accent1:hover {
+            color: var(--text-light) !important;
+        }
+
+        /* Input fields in login modal for light mode */
+        .light #username-input,
+        .light #password-input {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+
+        /* Theme toggle button styling for light mode */
+        .light #theme-toggle {
+            background-color: var(--theme-toggle-bg-light);
+            color: var(--text-light); /* Ensure icon is black */
+        }
+
+        /* Styles for buttons in light mode */
+        .light #explore-bundles-btn,
+        .light .view-story-btn,
+        .light .bundle-button,
+        .light .close-story-modal-and-scroll,
+        .light #bundle-modal button.btn-fill-hover { /* Added the checkout button */
+            background-color: var(--card-light); /* White background */
+            color: var(--text-light); /* Black text */
+        }
+
         .dark {
             background-color: var(--background-dark);
             color: var(--text-dark);
+            --border-coach-picture: #000000; /* Black border for coach picture in dark mode */
+            --dna-color: var(--dna-color-dark); /* Apply dark DNA colors */
+            --dna-shadow-color: var(--dna-shadow-color-dark); /* Apply dark DNA shadow colors */
         }
         .dark .bg-card {
             background-color: rgba(34, 34, 34, 0.7); /* More transparent dark gray */
@@ -76,7 +126,7 @@
             color: var(--accent1-dark);
         }
         .dark .bg-accent2 {
-            background-color: var(--accent2-dark);
+            color: var(--accent2-dark);
         }
         .dark .hover-bg-accent1:hover {
             background-color: var(--accent1-dark);
@@ -88,34 +138,43 @@
             border-color: var(--accent1-dark);
         }
 
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Ensure html and body take full height */
+        }
+
         body {
             font-family: 'Inter', sans-serif; /* Default body font */
             transition: background-color 0.3s ease, color 0.3s ease;
             position: relative; /* To contain the absolute positioned DNA elements */
             overflow-x: hidden; /* Prevent horizontal scroll from background elements */
+            min-height: 100vh; /* Ensure body takes at least full viewport height */
+            display: flex; /* Enable flexbox */
+            flex-direction: column; /* Stack children vertically */
         }
 
-        /* DNA Background - Dark Mode Only */
+        /* DNA Background - Now applies to both modes */
         /* Large radial gradients for subtle shades */
-        .dark::before, .dark::after {
+        body::before, body::after { /* Changed from .dark::before/.dark::after to body::before/.body::after */
             content: '';
             position: absolute;
             width: 800px; /* Large size */
             height: 800px; /* Large size */
-            background: radial-gradient(circle, var(--dna-shadow-color) 0%, transparent 70%); /* Subtle white shade */
+            background: radial-gradient(circle, var(--dna-shadow-color) 0%, transparent 70%); /* Subtle shade, color depends on theme */
             opacity: 1; /* Increased opacity for visibility */
             border-radius: 50%;
             z-index: -2; /* Ensure it's behind everything */
             pointer-events: none; /* Make it unclickable */
         }
 
-        .dark::before {
+        body::before {
             top: -200px;
             left: -300px;
             animation: rotateDNA1 30s linear infinite; /* Slow rotation */
         }
 
-        .dark::after {
+        body::after {
             bottom: -300px;
             right: -400px;
             animation: rotateDNA2 45s linear infinite reverse; /* Slower, reverse rotation */
@@ -261,6 +320,7 @@
         }
 
         .btn-fill-hover:hover::before {
+            color: #FFFFFF; /* Text becomes white on hover */
             transform: scaleX(1);
         }
 
@@ -309,13 +369,13 @@
         }
 
         .dark #login-btn {
-            background-color: var(--card-dark); /* Match back-to-top dark mode */
-            color: var(--text-dark); /* Match back-to-top dark mode */
+            background-color: #000000; /* Fully dark black */
+            color: #FFFFFF; /* White text */
         }
 
         .dark #login-btn:hover {
-            background-color: var(--accent1-dark); /* Match back-to-top hover dark */
-            color: #FFFFFF; /* Match back-to-top hover dark */
+            background-color: #333333; /* Slightly lighter black on hover */
+            color: #FFFFFF;
         }
 
 
@@ -334,13 +394,13 @@
 
         /* Dark mode specific styles for back to top button */
         .dark #back-to-top {
-            background-color: var(--card-dark); /* Darker gray background in dark mode */
-            color: var(--text-dark); /* Light text in dark mode */
+            background-color: #000000; /* Fully dark black */
+            color: #FFFFFF; /* White text */
         }
 
         .dark #back-to-top:hover {
-            background-color: var(--accent1-dark); /* A subtle accent color for hover in dark mode */
-            color: #FFFFFF; /* Ensure text is visible on hover */
+            background-color: #333333; /* Slightly lighter black on hover */
+            color: #FFFFFF;
         }
 
         .transformation-card {
@@ -356,7 +416,7 @@
         }
 
         .transformation-card:hover {
-            
+
         }
         /* Richer shadow and border for light mode */
         .light .transformation-card:hover {
@@ -410,10 +470,33 @@
             opacity: 1;
             transform: translateX(0);
         }
+
+        /* Main content area should grow to push footer down */
+        main {
+            flex-grow: 1;
+        }
+
+        /* Styles for buttons in dark mode */
+        .dark #explore-bundles-btn,
+        .dark .view-story-btn,
+        .dark .bundle-button,
+        .dark .close-story-modal-and-scroll,
+        .dark #bundle-modal button.btn-fill-hover {
+            background-color: #000000; /* Fully dark black background */
+            color: #FFFFFF; /* White text for contrast */
+        }
+
+        /* Adjust hover effect for these buttons in dark mode */
+        .dark .btn-fill-hover::before {
+            background-color: #333333; /* Slightly lighter black for hover fill */
+        }
+        .dark .btn-fill-hover:hover {
+            color: #FFFFFF; /* Ensure text remains white on hover */
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <div class="dna-container hidden dark:block">
+    <div class="dna-container">
         <div class="dna-strand"></div>
         <div class="dna-strand"></div>
         <div class="dna-strand"></div>
@@ -422,7 +505,8 @@
     <header class="p-6 shadow-md flex justify-between items-center rounded-b-xl bg-opaque-card transition-colors duration-300 sticky top-0 z-10 flex-col md:flex-row">
         <div class="flex items-center space-x-3 mb-4 md:mb-0">
             <i class="fas fa-dumbbell text-3xl text-accent1"></i>
-            <h1 class="text-3xl font-bold brand-name">David's Profile</h1> </div>
+            <h1 class="text-3xl font-bold brand-name">David's Profile</h1>
+        </div>
         <nav class="flex-grow flex justify-center md:justify-end">
             <ul class="flex flex-wrap justify-center space-x-4 md:space-x-6 text-lg font-medium">
                 <li><a href="#hero-section" class="nav-link py-2 px-3 rounded-md">Home</a></li>
@@ -443,7 +527,7 @@
                     Logout
                 </button>
             </div>
-            <button id="theme-toggle" class="p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-accent1 transition-colors duration-300">
+            <button id="theme-toggle" class="p-3 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-accent1 transition-colors duration-300">
                 <i class="fas fa-moon text-lg" id="theme-icon"></i>
             </button>
         </div>
@@ -452,7 +536,7 @@
     <main class="flex-grow p-6 md:p-8 lg:p-10 space-y-16 relative z-0">
         <section id="hero-section" class="text-center py-16 md:py-24 flex flex-col lg:flex-row items-center justify-center lg:space-x-12 px-6 fade-in-left">
             <div class="lg:w-1/3 mb-8 lg:mb-0">
-                <img src="imgs/coach.png" alt="David the Gym Coach" class="rounded-xl w-80 h-[480px] object-cover mx-auto border-4 border-black">
+                <img src="imgs/coach.png" alt="David the Gym Coach" class="rounded-xl w-80 h-[480px] object-cover mx-auto border-4 border-[var(--border-coach-picture)]">
             </div>
             <div class="lg:w-2/3 text-center lg:text-left">
                 <h2 class="text-5xl md:text-6xl font-extrabold leading-tight mb-4 text-accent1">
@@ -461,7 +545,7 @@
                 <p class="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-6">
                     Your dedicated gym coach, empowering you to achieve your fitness goals with personalized plans, expert guidance, and unwavering support.
                 </p>
-                <a href="#bundles-section" id="explore-bundles-btn" class="inline-block py-3 px-8 bg-black text-black dark:text-white text-lg font-semibold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 btn-fill-hover">
+                <a href="#bundles-section" id="explore-bundles-btn" class="inline-block py-3 px-8 text-lg font-semibold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 btn-fill-hover">
                     Explore Coaching Bundles <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
@@ -483,7 +567,7 @@
                         </div>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"Lost 30 lbs and gained incredible strength! David's guidance was a game-changer."</p>
-                    <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="view-story-btn w-full py-3 px-6 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-story-name="Sarah's Strength Journey"
                             data-story-before-img="imgs/t1.png"
                             data-story-after-img="imgs/t111.png"
@@ -506,7 +590,7 @@
                         </div>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"Achieved my dream physique. David's structured approach to training and diet is unmatched."</p>
-                    <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="view-story-btn w-full py-3 px-6 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-story-name="Mark's Muscle Gain"
                             data-story-before-img="imgs/t222.png"
                             data-story-after-img="imgs/t22.png"
@@ -529,7 +613,7 @@
                         </div>
                     </div>
                     <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">"My stamina is through the roof! David helped me conquer my first marathon."</p>
-                    <button class="view-story-btn w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="view-story-btn w-full py-3 px-6 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-story-name="Emily's Endurance Boost"
                             data-story-before-img="imgs/t3.png"
                             data-story-after-img="imgs/t33.png"
@@ -554,7 +638,7 @@
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Basic Workout Library Access</li>
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Email Support</li>
                     </ul>
-                    <button class="bundle-button w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="bundle-button w-full py-3 px-6 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-bundle-name="Starter Pack"
                             data-bundle-price="$99/month"
                             data-bundle-features="2 Coaching Sessions/Month, Basic Workout Library Access, Email Support"
@@ -575,7 +659,7 @@
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Priority Chat Support</li>
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Custom Meal Plans</li>
                     </ul>
-                    <button class="bundle-button w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="bundle-button w-full py-3 px-6 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-bundle-name="Pro Plan"
                             data-bundle-price="$199/month"
                             data-bundle-features="4 Coaching Sessions/Month, Premium Workout Library Access, Priority Chat Support, Custom Meal Plans"
@@ -596,7 +680,7 @@
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>24/7 Direct Coach Access</li>
                         <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Performance Analytics</li>
                     </ul>
-                    <button class="bundle-button w-full py-3 px-6 bg-black text-black dark:text-white rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
+                    <button class="bundle-button w-full py-3 px-6 rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover"
                             data-bundle-name="Elite Coaching"
                             data-bundle-price="$349/month"
                             data-bundle-features="Unlimited Coaching Sessions, Full Workout & Nutrition Library, 24/7 Direct Coach Access, Performance Analytics"
@@ -728,7 +812,7 @@
             </div>
             <p id="story-modal-quote" class="text-lg italic text-gray-700 dark:text-gray-300 mb-4"></p>
             <p id="story-modal-full" class="text-md text-gray-700 dark:text-gray-300 leading-relaxed mb-6"></p>
-            <a href="#contact-section" class="close-story-modal-and-scroll w-full py-3 px-6 bg-black text-black dark:text-white text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover text-center block">
+            <a href="#contact-section" class="close-story-modal-and-scroll w-full py-3 px-6 text-lg font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105 btn-fill-hover text-center block">
                 Contact David for Your Story <i class="fas fa-paper-plane ml-2"></i>
             </a>
         </div>
@@ -745,12 +829,12 @@
             <form id="login-form" class="space-y-6">
                 <div>
                     <label for="username-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username / Email</label>
-                    <input type="text" id="username-input" name="username" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-black text-white focus:outline-none focus:ring-2 focus:ring-accent1" required>
+                    <input type="text" id="username-input" name="username" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white text-black dark:bg-black dark:text-white focus:outline-none focus:ring-2 focus:ring-accent1" required>
                     <p id="username-error" class="text-red-500 text-sm mt-1 hidden">Please enter your username or email.</p>
                 </div>
                 <div>
                     <label for="password-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
-                    <input type="password" id="password-input" name="password" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-black text-white focus:outline-none focus:ring-2 focus:ring-accent1" required>
+                    <input type="password" id="password-input" name="password" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white text-black dark:bg-black dark:text-white focus:outline-none focus:ring-2 focus:ring-accent1" required>
                     <p id="password-error" class="text-red-500 text-sm mt-1 hidden">Please enter your password.</p>
                 </div>
                 <button type="submit" class="w-full py-3 px-6 bg-white text-black text-lg font-semibold rounded-md shadow-md transition-all duration-300 btn-fill-hover">
@@ -806,7 +890,7 @@
             const loginModalCloseBtn = document.getElementById('login-modal-close-btn');
             const loginForm = document.getElementById('login-form');
             const usernameInput = document.getElementById('username-input');
-            const passwordInput = document = document.getElementById('password-input');
+            const passwordInput = document.getElementById('password-input');
             const usernameError = document.getElementById('username-error');
             const passwordError = document.getElementById('password-error');
             const loginModalContent = loginModal.querySelector('.modal-content');
@@ -828,14 +912,12 @@
                 html.classList.remove('light');
                 themeIcon.classList.remove('fa-sun');
                 themeIcon.classList.add('fa-moon');
-                dnaContainer.classList.remove('hidden'); // Show DNA in dark mode
             } else {
                 html.classList.add('light');
                 html.classList.remove('dark');
                 themeIcon.classList.remove('fa-moon');
                 themeIcon.classList.add('fa-sun');
                 localStorage.setItem('theme', 'light');
-                dnaContainer.classList.add('hidden'); // Hide DNA in light mode
             }
 
             themeToggle.addEventListener('click', () => {
@@ -845,14 +927,12 @@
                     themeIcon.classList.remove('fa-sun');
                     themeIcon.classList.add('fa-moon');
                     localStorage.setItem('theme', 'dark');
-                    dnaContainer.classList.remove('hidden'); // Show DNA
                 } else {
                     html.classList.remove('dark');
                     html.classList.add('light');
                     themeIcon.classList.remove('fa-moon');
                     themeIcon.classList.add('fa-sun');
                     localStorage.setItem('theme', 'light');
-                    dnaContainer.classList.add('hidden'); // Hide DNA
                 }
             });
 
