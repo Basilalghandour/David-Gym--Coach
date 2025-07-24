@@ -187,7 +187,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100%; /* Ensure container does not exceed viewport width */
             height: 100%;
             overflow: hidden; /* Clip DNA parts that go out of bounds */
             pointer-events: none;
@@ -206,19 +206,19 @@
         }
 
         .dna-strand:nth-child(1) {
-            left: 20%;
+            left: 20vw; /* Use vw for better mobile responsiveness */
             transform: rotate(15deg); /* Slight angle */
             animation-delay: 0s;
         }
 
         .dna-strand:nth-child(2) {
-            left: 80%;
+            left: 80vw; /* Use vw for better mobile responsiveness */
             transform: rotate(-15deg); /* Opposite angle */
             animation-delay: -30s; /* Offset animation for continuous look */
         }
 
         .dna-strand:nth-child(3) {
-            left: 50%;
+            left: 50vw; /* Use vw for better mobile responsiveness */
             transform: rotate(5deg);
             opacity: 0.55; /* Slightly less opaque for the middle strand */
             animation-delay: -10s;
